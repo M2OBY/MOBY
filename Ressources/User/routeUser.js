@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const actionUser = require ('./actionUser')
-
+const passport = require('passport')
 
 
 router.route('/register')
@@ -16,7 +16,18 @@ router.route('/login')
   .get((req, res) => {
     res.render('login');
   })
+    .post(passport.authenticate('local',{
+        successRedirect : 'dashboard',
+        failureRedirect : 'login',
+        failureFlash : true
+    }))
 
+
+router.route('/dashboard')
+    .get((req, res) => {
+        console.log('req.user',req.user)
+        res.render('dashboard');
+    })
 
 
 

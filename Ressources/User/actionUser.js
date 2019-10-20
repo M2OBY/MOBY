@@ -4,6 +4,7 @@
 //pour controler les inputs du password
 const Joi    = require('joi')
 const User = require('./modelUser')
+const passport = require('passport')
 const userSchema = Joi.object().keys({
     email : Joi.string().email().required(),
     username : Joi.string().required(),
@@ -47,8 +48,9 @@ module.exports = {
             const newUser = await new User(result.value)
             console.log('newUser',newUser)
             await newUser.save()
-            req.flash('sucess', 'Vous pouvez vous connecter')
-            res.redirect('/users/login')
+            req.flash('success','Données valide, bravo.')
+             res.redirect('/users/login')
+
             return
         }catch(error){
             next(error)

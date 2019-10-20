@@ -6,8 +6,9 @@ const bodyParser = require('body-parser');
 const expressHandlebars = require('express-handlebars');
 const flash = require('connect-flash');
 const session = require('express-session');
-
+require('./config/passport')
 const mongoose = require('mongoose')
+const passport = require('passport')
 mongoose.Promise = global.Promise
 mongoose.connect('mongodb://localhost/MOBY')
 const app = express();
@@ -28,15 +29,19 @@ app.use(session({
   saveUninitialized: false,
   resave: false
 }));
-
+app.use(passport.initialize())
+app.use(passport.session())
 app.use(flash());
 
-//Affichage des alertes pour le user
+//Affichage des alertes/ variable pour le user
 app.use((req,res,next) => {
 
   res.locals.success_messages = req.flash('success')
   res.locals.error_messages = req.flash('error')
-  next();
+  res.locals.isAuthenticated = req.user ? true:false
+  res.locals.username = req.user
+  next()
+
 })
 app.use('/', require('./routes/index'));
 app.use('/users', require('./Ressources/User/routeUser'));
