@@ -7,6 +7,7 @@ const userSchema = new Schema(
         prenom :String,
         email : String,
         password : String,
+        username :String,
         dateNaissance : String,
         adresse1 : String,
         adresse2 : String,
@@ -39,8 +40,12 @@ module.exports.hashPassword = async(password) =>{
 
 module.exports.comparePasswords = async (inputPassword,hashedPassword) => {
     try{
-       return await  bcrypt.compare(inputPassword,hashedPassword)
 
+        console.log('in',inputPassword,' out',hashedPassword)
+
+       const comparaison = await  bcrypt.compare(inputPassword,hashedPassword)
+        console.log('comparaison',comparaison)
+        return comparaison
     }catch(error){
         throw new Error('Comparing faild',error)
     }

@@ -40,6 +40,7 @@ app.use((req,res,next) => {
   res.locals.error_messages = req.flash('error')
   res.locals.isAuthenticated = req.user ? true:false
 
+
   next()
 
 })

@@ -16,6 +16,7 @@ passport.deserializeUser(async (id,done) => {
 })
 
 
+
 passport.use('local',new LocalStrategy({
     usernameField:'email',
     passwordField: 'password',
@@ -29,7 +30,8 @@ passport.use('local',new LocalStrategy({
         }
 
         //if the password is correct
-        const isValid = User.comparePasswords(password,user.password)
+        const isValid = await User.comparePasswords(password,user.password)
+        console.log('isValid',isValid)
         if(!isValid){  return done(null,false, {message: 'mot de passe inconnu'})}
         if(!user.active){
             return done(null,false,{message : 'vous devez vérifier votre mail'})

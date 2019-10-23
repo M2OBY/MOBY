@@ -52,13 +52,13 @@ router.route('/dashboard')
         console.log('req.user',req.user)
 
 
-        res.render('dashboard',{username:req.user.email});
+        res.render('dashboard',{username:req.user.username});
     })
 
 router.route('/verify')
     .get(isNotAuthenticated,(req, res) => {
         console.log('req.user',req.user)
-        res.render('verify');
+        res.render('verify',{token:req.param("token")});
     })
     .post( (req,res,next)=> {
         actionUser.verifyUser(req,res,next);
