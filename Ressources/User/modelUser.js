@@ -14,7 +14,8 @@ const userSchema = new Schema(
         ville : String,
         mobile: String,
         fixe:String,
-        active:Boolean
+        active:Boolean,
+        secretToken :String
     }, {
         timestamps : {
             createdAt: 'createdAt',

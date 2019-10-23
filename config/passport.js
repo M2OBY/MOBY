@@ -30,11 +30,12 @@ passport.use('local',new LocalStrategy({
 
         //if the password is correct
         const isValid = User.comparePasswords(password,user.password)
-        if(isValid){
-            return done(null,user)
-        }else{
-            return done(null,false, {message: 'mot de passe inconnu'})
+        if(!isValid){  return done(null,false, {message: 'mot de passe inconnu'})}
+        if(!user.active){
+            return done(null,false,{message : 'vous devez vérifier votre mail'})
         }
+            return done(null,user)
+
     }catch (error) {
         return done(error,false)
     }

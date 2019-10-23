@@ -3,9 +3,33 @@ const router = express.Router()
 const actionUser = require ('./actionUser')
 const passport = require('passport')
 
+//Autorisation
+const isAuthenticated = (req,res,next) => {
 
+    if(req.isAuthenticated()){
+        return next()
+
+            }else{
+        req.flash('error','il faut senregistrer avant! ')
+        res.redirect('/')
+
+}
+}
+
+//Autorisation
+const isNotAuthenticated = (req,res,next) => {
+
+    if(req.isAuthenticated()){
+        req.flash('error','désoler vous êtes déjà connecter')
+        res.redirect('/')
+
+    }else{
+        return next()
+
+    }
+}
 router.route('/register')
-  .get((req, res) => {
+  .get(isNotAuthenticated,(req, res) => {
     res.render('register');
   })
   .post( (req, res,next)  => {
@@ -13,7 +37,7 @@ router.route('/register')
   });
 
 router.route('/login')
-  .get((req, res) => {
+  .get(isNotAuthenticated,(req, res) => {
     res.render('login');
   })
     .post(passport.authenticate('local',{
@@ -24,11 +48,30 @@ router.route('/login')
 
 
 router.route('/dashboard')
-    .get((req, res) => {
+    .get(isAuthenticated,(req, res) => {
         console.log('req.user',req.user)
-        res.render('dashboard');
+
+
+        res.render('dashboard',{username:req.user.email});
     })
 
+router.route('/verify')
+    .get(isNotAuthenticated,(req, res) => {
+        console.log('req.user',req.user)
+        res.render('verify');
+    })
+    .post( (req,res,next)=> {
+        actionUser.verifyUser(req,res,next);
+
+    });
+
+router.route('/logout')
+    .get(isAuthenticated,(req, res) => {
+        req.logout()
+        req.flash('success', 'déconnection avec succès, à bientôt ! ')
+
+        res.redirect('/')
+    })
 
 
 

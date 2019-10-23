@@ -5,6 +5,7 @@
 const Joi    = require('joi')
 const User = require('./modelUser')
 const passport = require('passport')
+const randomstring = require('randomstring')
 const userSchema = Joi.object().keys({
     email : Joi.string().email().required(),
     username : Joi.string().required(),
@@ -40,6 +41,13 @@ module.exports = {
             const hash = await User.hashPassword(result.value.password)
             //console.log('hash',hash)
 
+            //generation du secret token
+            const secretToken = randomstring.generate()
+            result.value.secretToken = secretToken
+
+            // flag le compte comme inactive
+            result.value.active = false
+
             //Enregistrer utilisateur dans la BD
             delete result.value.confirmationPassword
             result.value.password = hash
@@ -55,8 +63,29 @@ module.exports = {
         }catch(error){
             next(error)
         }
-    }
+    },
+    async verifyUser(req, res,next){
+        try {
 
+
+            const {secretToken} = req.body
+
+            //chercher le compte qui matche avec ce secretToken
+            const user = await User.findOne({'secretToken': secretToken})
+            if (!user) {
+                req.flash('error', 'aucun utilisateur trouvé')
+                res.redirect('verify');
+                return
+            }
+            user.active = true
+            user.secretToken = '';
+            await user.save()
+            req.flash('success', 'Merci ! maintenant vous pouvez vous connecter')
+            res.redirect('login')
+        } catch (error) {
+            next(error)
+        }
+    }
 }
 
 
