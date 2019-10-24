@@ -4,9 +4,11 @@
 //pour controler les inputs du password
 const Joi    = require('joi')
 const User = require('./modelUser')
+const processUser = require('./processUsers')
 const passport = require('passport')
 const randomstring = require('randomstring')
 const mailer = require('../../misc/mailer')
+const mailHTML = require('./mailRegistration')
 const userSchema = Joi.object().keys({
     email : Joi.string().email().required(),
     username : Joi.string().required(),
@@ -30,14 +32,29 @@ module.exports = {
                 res.redirect('/users/register')
                 return
             }
+          /*  let userExist = false
             //vérification l'existance du mail
-            const user = await User.findOne({'email': result.value.email})
-            if (user) {
-                req.flash('error', 'Email existe déja')
-                res.redirect('/users/register')
-                return
-            }
+             await processUser.verifUser({username : result.value.username,email:result.value.email})
+                .then((retour)=>{
+                    if(retour){
 
+                        console.log('resultat verification mail',retour)
+                        req.flash('error', 'Email existe déja')
+                        res.redirect('/users/register')
+                        userExist = true
+                        return
+                    }
+
+                })
+                .catch((typeErr)=>{
+                    //res.status(400).json(typeErr)
+                    res.status(400).json({
+                        "message" : typeErr
+                    })})
+
+
+            if(userExist) return userExist
+            console.log('userExist',userExist) */
             //Cryptage du password
             const hash = await User.hashPassword(result.value.password)
             //console.log('hash',hash)
@@ -54,29 +71,29 @@ module.exports = {
             result.value.password = hash
             console.log('new value ', result.value)
 
-            const newUser = await new User(result.value)
-            console.log('newUser', newUser)
-            await newUser.save()
+            //const newUser = await new User(result.value)
+               await processUser.creerUser(result.value)
+                .then(  (retour)=>{
+                    if(retour){
+                        console.log('ressss',res)
+                        req.flash('success', 'verifier votre mail sil vous plait.')
+                        res.redirect('/users/login')
+                    }
 
-            // composer un email
-            const html = `Bienvenu ! 
-            <br/><br/>
-            s'il vous plait, vérifier votre mail en copiant ce token : <br/>
-            token : <b> ${secretToken}</b>
-            <br/>
-            en cliquant sur ce lien : 
-            <a href="http://localhost:5000/users/verify?token=${secretToken}">http://localhost:5000/users/verify</a>
-            <br/><br/>
-            Très bonne journée.
-            `
-            console.log('mailsender', result.value.email)
 
-            const mail = await mailer.sendEmail('wadica2@hotmail.fr',result.value.email, '[MOBY] verification mail', html)
-            console.log('mail', mail)
-            req.flash('success', 'verifier votre mail sil vous plait.')
-            res.redirect('/users/login')
+                })
+                .catch((error)=>{
+                    console.log('erreeeeeur',error)
 
-            return
+                })
+
+
+          //  console.log('mailsender', mailHTML.preparationHTML((secretToken)))
+
+          //  const mail =  mailer.sendEmail('wadica2@hotmail.fr',result.value.email, '[MOBY] verification mail', mailHTML.preparationHTML((secretToken)))
+
+           // console.log('mail', mail)
+
         } catch (error) {
             next(error)
         }
