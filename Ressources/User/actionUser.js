@@ -32,7 +32,7 @@ module.exports = {
                 res.redirect('/users/register')
                 return
             }
-          /*  let userExist = false
+            let userExist = false
             //vérification l'existance du mail
              await processUser.verifUser({username : result.value.username,email:result.value.email})
                 .then((retour)=>{
@@ -47,14 +47,18 @@ module.exports = {
 
                 })
                 .catch((typeErr)=>{
-                    //res.status(400).json(typeErr)
-                    res.status(400).json({
-                        "message" : typeErr
-                    })})
+                  if(typeErr){
+                      res.status(400).json({
+                          "message" : typeErr
+                      })
+                      return
+                  }
+
+                })
 
 
             if(userExist) return userExist
-            console.log('userExist',userExist) */
+            console.log('userExist',userExist)
             //Cryptage du password
             const hash = await User.hashPassword(result.value.password)
             //console.log('hash',hash)
@@ -75,7 +79,7 @@ module.exports = {
                await processUser.creerUser(result.value)
                 .then(  (retour)=>{
                     if(retour){
-                        console.log('ressss',res)
+                        //console.log('ressss',res)
                         req.flash('success', 'verifier votre mail sil vous plait.')
                         res.redirect('/users/login')
                     }
@@ -83,16 +87,19 @@ module.exports = {
 
                 })
                 .catch((error)=>{
-                    console.log('erreeeeeur',error)
+                    if(error){
+                        console.log('erreeeeeur',error)
+                    }
+
 
                 })
 
 
-          //  console.log('mailsender', mailHTML.preparationHTML((secretToken)))
+           console.log('mailsender', mailHTML.preparationHTML((secretToken)))
 
-          //  const mail =  mailer.sendEmail('wadica2@hotmail.fr',result.value.email, '[MOBY] verification mail', mailHTML.preparationHTML((secretToken)))
+            const mail =  mailer.sendEmail('wadica2@hotmail.fr',result.value.email, '[MOBY] verification mail', mailHTML.preparationHTML((secretToken)))
 
-           // console.log('mail', mail)
+           console.log('mail', mail)
 
         } catch (error) {
             next(error)
