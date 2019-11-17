@@ -1,0 +1,18 @@
+<form class="form-signin" action="/Media/parse" method="POST">
+    <h2 class="form-signin-heading">Parser fichier</h2>
+
+    <label for="nomFichier" class="sr-only">Selectionner un fichier</label>
+
+
+    <br/>
+    <select name="select2" size="3">
+        {{#each data}}
+            <option >{{nomRessource}}</option>
+        {{/each}}
+
+
+    </select>
+
+    <textarea > {{fichierParser}}</textarea>
+    <button class="btn btn-lg btn-default btn-block" type="submit">Parser</button>
+</form>
