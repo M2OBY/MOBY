@@ -5,14 +5,25 @@
 
 
     <br/>
+{{#if data}}
     <select name="select2" size="3">
         {{#each data}}
             <option >{{nomRessource}}</option>
         {{/each}}
 
 
-    </select>
 
-    <textarea > {{fichierParser}}</textarea>
+    </select>
     <button class="btn btn-lg btn-default btn-block" type="submit">Parser</button>
+{{/if}}
+{{#if fichierParser}}
+    <label for="story">extraction data</label>
+
+    <textarea id="story" name="story"
+              rows="5" cols="33">
+        {{fichierParser}}
+</textarea>
+{{/if}}
+
+
 </form>

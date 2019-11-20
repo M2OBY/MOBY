@@ -3,9 +3,15 @@ const Schema = mongoose.Schema
 
 const mediaSchema = new Schema(
     {
-        page: {},
+        page: {
+            numPage : String,
+            MotCle : {
+
+            }
+        },
         nomRessource :String,
-        userID : String
+        userID : String,
+
     }, {
         timestamps : {
             createdAt: 'createdAt',
