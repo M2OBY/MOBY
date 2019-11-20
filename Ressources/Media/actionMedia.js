@@ -7,6 +7,8 @@ const  generateHtml = office2html.generateHtml;
 const pdfreader = require("pdfreader");
 const passport = require('passport')
 
+const pdf = require('pdf-parse');
+
 
 
 function printRows(rows) {
@@ -16,18 +18,16 @@ function printRows(rows) {
 }
 
 async function  parserMedia (filePath){
-    let rows = {}; // indexed by y-position
-    let texte=""
+ let rows = {}; // indexed by y-position
 
-
-
-    new pdfreader.PdfReader().parseFileItems( filePath, (err,item)=> {
+    await new pdfreader.PdfReader().parseFileItems( filePath,  (err,item)=> {
 
         if (!item || item.page) {
             // end of file, or page
             printRows(rows);
             if(item)  {console.log("PAGE:",item.page) ; texte = texte +"\nPAGE:"+item.page+"\n"}
             rows = {}; // clear rows for next page
+            console.log("parseMedia",texte)
         } else if (item.text) {
            // console.log("hhhhhhhhh",item.text)
             // accumulate text items into rows object, per line
@@ -35,10 +35,46 @@ async function  parserMedia (filePath){
             texte = texte + item.text
         }
     });
-    console.log("parseMedia",texte)
-return texte
-}
+/*
+    let texte=""
+    let dataBuffer = fs.readFileSync(filePath);
 
+    pdf(dataBuffer).then(function(data) {
+
+        // number of pages
+        console.log(data.numpages);
+        // number of rendered pages
+        console.log(data.numrender);
+        // PDF info
+        console.log(data.info);
+        // PDF metadata
+        console.log(data.metadata);
+        // PDF.js version
+        // check https://mozilla.github.io/pdf.js/getting_started/
+        console.log(data.version);
+        // PDF text
+        console.log(data.text);
+        let texte=data.text
+        return texte
+    });
+*/
+}
+let myCallback = function(texte,res) {
+    if (texte!=""||!texte){
+
+            console.log("parsing",texte)
+        let  words = texte.split(' ');
+
+            res.format ({
+                'application/json': function() {
+                    res.send({ data: texte });
+                },'text/html': function() {
+
+                    res.render('Parse',{fichierParser:texte});
+                }
+            });
+        }
+};
 module.exports = {
 
     afficheMedia: async function(req,res){
@@ -60,16 +96,59 @@ module.exports = {
 
     },
     parseMedia: async function(req,res){
-        let texte = await parserMedia("Ressources\\Media\\files\\"+req.body.select2)
-        console.log("parsing",texte)
-                res.format ({
-                    'application/json': function() {
-                        res.send({ data: texte });
-                    },'text/html': function() {
+        //let texte = await parserMedia("Ressources\\Media\\files\\"+req.body.select2)
+        let rows = {}; // indexed by y-position
+        let texte=""
+        new pdfreader.PdfReader().parseFileItems("Ressources\\Media\\files\\"+req.body.select2, function(
+            err,
+            item
+        ) {
 
-                        res.render('Parse',{fichierParser:texte});
-                    }
-                });
+            if (!item || item.page) {
+                // end of file, or page
+                printRows(rows);
+                if(item) {console.log("PAGE:", item.page);texte=texte+"\n/PAGE:"+item.page+"/\n"}
+
+                if( !item ){if(!item ){console.log("OPP");myCallback(texte,res);return }}
+                rows = {}; // clear rows for next page
+
+            } else if (item.text) {
+                // accumulate text items into rows object, per line
+                (rows[item.y] = rows[item.y] || []).push(item.text);
+                texte=texte+" " + item.text
+            }
+        });
+
+
+    /*    let dataBuffer = fs.readFileSync("Ressources\\Media\\files\\"+req.body.select2);
+
+        pdf(dataBuffer).then(function(data) {
+
+            // number of pages
+            console.log(data.numpages);
+            // number of rendered pages
+            console.log(data.numrender);
+            // PDF info
+            console.log(data.info);
+            // PDF metadata
+            console.log(data.metadata);
+            // PDF.js version
+            // check https://mozilla.github.io/pdf.js/getting_started/
+            console.log(data.version);
+            // PDF text
+            console.log(data.text);
+             texte=data.text
+            console.log("parsing",texte)
+            res.format ({
+                'application/json': function() {
+                    res.send({ data: texte });
+                },'text/html': function() {
+
+                    res.render('Parse',{fichierParser:texte});
+                }
+            });
+
+        });*/
 
     },
     uploadMedia : async  function (req,res) {
