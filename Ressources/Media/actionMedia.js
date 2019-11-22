@@ -59,20 +59,56 @@ async function  parserMedia (filePath){
     });
 */
 }
-let myCallback = function(texte,res) {
+let myCallback = function(texte,req,res) {
+    let page={numPage : String,
+        MotCle : String,
+    }
+    let pages=[]
+    let requette
+    let i =0
+    let numPage = "/PAGE0/"
     if (texte!=""||!texte){
 
             console.log("parsing",texte)
         let  words = texte.split(' ');
 
-            res.format ({
-                'application/json': function() {
-                    res.send({ data: texte });
-                },'text/html': function() {
+        for(let x in words){
 
-                    res.render('Parse',{fichierParser:texte});
+           // console.log("words[x]",words[x],words[x].length)
+
+            if(words[x].indexOf("PAGE")>0){
+                numPage=words[x].substr(words[x].indexOf("PAGE"),6)
+               i++
+            }else if(words[x].length>5){
+
+                pages.push([numPage,words[x]])
+                i++
+
+            }
+
+
+              requette= processMedia.modifierMedia(pages,req.body.select2)
+
+        }
+        if(requette) {
+            res.format({
+                'application/json': function () {
+                    res.send({data: texte});
+                }, 'text/html': function () {
+
+                    res.render('Parse', {fichierParser: texte});
                 }
             });
+        }else{
+            res.format({
+                'application/json': function () {
+                    res.send({data:"Erreur Serveurs"})
+                }, 'text/html': function () {
+
+                    res.render('Parse', {fichierParser: "Erreur Serveurs"});
+                }
+            });
+        }
         }
 };
 module.exports = {
@@ -109,7 +145,7 @@ module.exports = {
                 printRows(rows);
                 if(item) {console.log("PAGE:", item.page);texte=texte+"\n/PAGE:"+item.page+"/\n"}
 
-                if( !item ){if(!item ){console.log("OPP");myCallback(texte,res);return }}
+                if( !item ){if(!item ){console.log("OPP");myCallback(texte,req,res);return }}
                 rows = {}; // clear rows for next page
 
             } else if (item.text) {
