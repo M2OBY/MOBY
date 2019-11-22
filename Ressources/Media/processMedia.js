@@ -21,13 +21,13 @@ module.exports = {
     }, modifierMedia: (mediaa,nomMedia) => {
         return new Promise(  (resolve, reject) => {
 
-            let media = new Media(mediaa)
+
             const filter = {nomRessource: nomMedia};
             const update = {page: mediaa};
 
 // `doc` is the document _before_ `update` was applied
             let doc = Media.findOneAndUpdate(filter, update).then((medias) => {
-                resolve(medias)
+                if(medias.page!=null) resolve(medias)
             }, (err) => {
                 reject(err)
             })
