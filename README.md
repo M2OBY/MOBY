@@ -8,16 +8,16 @@ Notre projet est scindé en 2 parties:
 
 La partie <b> Backend </b> est structuré en composants ,et chacun est constiuté de la manière suivante: <br>
 
-<h4> Route: <br>
+<h4> Route: <br> </h4>
 La route définit le chemin par lequel on appelle l'action, afin que la requete soit traitée.
 
-<h4> Action: <br>
+<h4> Action: <br></h4>
 C'est une fonction qui prend les parametres de la requete et l'envoie au process pour le traitement.
 
-<h4> Process: <br>
+<h4> Process: <br></h4>
 C'est la partie du traitement de la requete, qui interagit avec l'environnement externe (exemple notre base de donnée Mongo, ou autre Api
 externes)
-<h4> Model: <br>
+<h4> Model: <br> </h4>
 C'est le schéma de la base de donnée.
 
 Pour pouvoir bien gérer la création de comptes des utilisateurs, nous avons integré le module Mailgun pour envoyer des mails contenant
