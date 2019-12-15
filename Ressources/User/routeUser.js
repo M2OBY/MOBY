@@ -38,6 +38,7 @@ router.route('/register')
 
 router.route('/login')
   .get(isNotAuthenticated,(req, res) => {
+      //console.log("YOUPIIIIIIIIIIIIIIIIIIIII")
     res.render('login');
   })
     .post(passport.authenticate('local',{
