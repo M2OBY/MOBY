@@ -14,6 +14,8 @@ const isAuthenticated = (req,res,next) => {
     }
 }
 
+
+
 //Autorisation
 const isNotAuthenticated = (req,res,next) => {
 
@@ -32,12 +34,25 @@ const isNotAuthenticated = (req,res,next) => {
 router.route('/')
     .get(isAuthenticated,(req, res) => {
         console.log('req.user',req.user)
-
-
         res.render('uploadFile',{username:req.user.username});
     })
     .post( isAuthenticated, (req, res)  => {
         actionMedia.uploadMedia(req,res);
     })
+router.route('/parse/')
+    .post(isAuthenticated,(req, res) => {
+
+        actionMedia.parseMedia(req,res)
+    })
+
+    .get(isAuthenticated,async (req, res) => {
+
+         actionMedia.afficheMedia(req,res)
+
+           // res.render('Parse',{data:data})
+
+       // res.render('Parse',{username:req.user.username});
+    })
+
 
 module.exports = router;
