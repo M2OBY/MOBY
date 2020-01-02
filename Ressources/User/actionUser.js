@@ -98,6 +98,7 @@ module.exports = {
            console.log('mailsender', mailHTML.preparationHTML((secretToken)))
 
             const mail =  mailer.sendEmail('wadica2@hotmail.fr',result.value.email, '[MOBY] verification mail', mailHTML.preparationHTML((secretToken)))
+            //const mail =  mailer.sendEmail('mdoubobobarry07ca@gmail.com',result.value.email, '[MOBY] verification mail', mailHTML.preparationHTML((secretToken)))
 
            console.log('mail', mail)
 

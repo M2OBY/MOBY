@@ -54,5 +54,11 @@ router.route('/parse/')
        // res.render('Parse',{username:req.user.username});
     })
 
+    router.route('/supprimer/:mediaID')
+    .delete(isAuthenticated,async(req, res) => {
+
+        actionMedia.supprimerMedia(req,res)
+    })
+
 
 module.exports = router;

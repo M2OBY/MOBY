@@ -256,5 +256,12 @@ module.exports = {
         } catch (error) {
             res.status(400).json(error)
         }
+    },
+
+    supprimerMedia : async function(req,res){
+        let mediaID = req.params.mediaID
+        processMedia.supprimerMedia(mediaID);
+        res.json({message: 'Fichier Supprimée'})
+        
     }
 }

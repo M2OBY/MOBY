@@ -20,7 +20,7 @@ const isAuthenticated = (req,res,next) => {
 const isNotAuthenticated = (req,res,next) => {
 
     if(req.isAuthenticated()){
-        req.flash('error','désoler vous êtes déjà connecter')
+        req.flash('error','désolé vous êtes déjà connecté')
         res.redirect('/')
 
     }else{

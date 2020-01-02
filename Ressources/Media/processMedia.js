@@ -45,5 +45,15 @@ module.exports = {
                     resolve(result)
                 }else if(!result) reject (err)
             })
-        })}
+        })},
+
+    supprimerMedia : (id) => {
+        Media.remove({_id: id}, (err) => {
+            if (err){
+                    return err;
+                }
+        
+               return Media;
+            })
+    }
 }
