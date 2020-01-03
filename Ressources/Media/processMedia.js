@@ -48,6 +48,8 @@ module.exports = {
         })},
 
     supprimerMedia : (id) => {
+        let name
+
         Media.remove({_id: id}, (err) => {
             if (err){
                     return err;
@@ -55,5 +57,27 @@ module.exports = {
         
                return Media;
             })
-    }
+    },
+
+    afficherMediaName: (id) => {
+         return new Promise( (resolve, reject) =>{
+
+            Media.findById({_id: id},(err, result) => {
+                if (err) {
+                    reject(err)
+                } else if(result) {
+                    console.log("nom fichier", result.nomRessource)
+                    resolve(result.nomRessource)
+                }else if(!result) reject (err)
+            })
+        })} 
+
+       /*  Media.findById({_id: id}, (err) => {
+            if (err){
+                    return err;
+                }
+                console.log("nom fichier", result.nomRessource)
+               return Media;
+            }) */
+        
 }
