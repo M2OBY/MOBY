@@ -7,7 +7,7 @@
             token : <b> ${secretToken}</b>
             <br/>
             en cliquant sur ce lien : 
-            <a href="http://localhost:5000/users/verify?token=${secretToken}">http://localhost:5000/users/verify</a>
+            <a href="http://localhost:3000/verif">http://localhost:3000/verif</a>
             <br/><br/>
             Très bonne journée.
             `

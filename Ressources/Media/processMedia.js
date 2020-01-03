@@ -45,5 +45,30 @@ module.exports = {
                     resolve(result)
                 }else if(!result) reject (err)
             })
+        })},
+    rechercheMedia: (media) => {
+        return new Promise( (resolve, reject) =>{
+            const aggregatorOpts = [{
+                $unwind: "$items.page"
+            },
+                {
+                    $group: {
+                        _id: "$items.page.numPage",
+                        count: { $sum: 1 }
+                    }
+                }
+            ]
+            Media.aggregate(aggregatorOpts).exec().then((data)=>{
+                console.log("data",data)
+                resolve(data)
+            })
+
+           /* Media.find(media,(err, result) => {
+                if (err) {
+                    reject(err)
+                } else if(result) {
+                    resolve(result)
+                }else if(!result) reject (err)
+            })*/
         })}
 }

@@ -53,6 +53,19 @@ router.route('/parse/')
 
        // res.render('Parse',{username:req.user.username});
     })
+router.route('/find/')
+    .post(isAuthenticated,(req, res) => {
 
+        actionMedia.parseMedia(req,res)
+    })
+
+    .get(isAuthenticated,async (req, res) => {
+
+        actionMedia.recherchePageMedia(req,res)
+
+        // res.render('Parse',{data:data})
+
+        // res.render('Parse',{username:req.user.username});
+    })
 
 module.exports = router;

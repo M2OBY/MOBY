@@ -10,10 +10,10 @@ const randomstring = require('randomstring')
 const mailer = require('../../misc/mailer')
 const mailHTML = require('./mailRegistration')
 const userSchema = Joi.object().keys({
-    email : Joi.string().email().required(),
-    username : Joi.string().required(),
-    password : Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
-    confirmationPassword : Joi.any().valid(Joi.ref('password')).required()
+      email : Joi.string().email().required(),
+      username : Joi.string().required(),
+      password : Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
+      confirmationPassword : Joi.any().valid(Joi.ref('password')).required()
 })
 
 module.exports = {
@@ -109,8 +109,8 @@ module.exports = {
         try {
 
 
-            const {secretToken} = req.body
-
+            const secretToken = req.body.secretToken
+            console.log("token",req.body.secretToken)
             //chercher le compte qui matche avec ce secretToken
             const user = await User.findOne({'secretToken': secretToken.trim()})
             if (!user) {

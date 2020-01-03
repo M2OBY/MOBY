@@ -1,0 +1,29 @@
+<form class="form-signin" action="/Media/find" method="POST">
+    <h2 class="form-signin-heading">Parser fichier</h2>
+
+    <label for="nomFichier" class="sr-only">Selectionner un fichier</label>
+
+
+    <br/>
+{{#if data}}
+    <select name="select2" size="3">
+        {{#each data}}
+            <option >{{nomRessource}}</option>
+        {{/each}}
+
+
+
+    </select>
+    <button class="btn btn-lg btn-default btn-block" type="submit">Parser</button>
+{{/if}}
+{{#if fichierParser}}
+    <label for="story">extraction data</label>
+
+    <textarea id="story" name="story"
+              rows="5" cols="33">
+        {{fichierParser}}
+</textarea>
+{{/if}}
+
+
+</form>

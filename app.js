@@ -7,8 +7,10 @@ const expressHandlebars = require('express-handlebars');
 const flash = require('connect-flash');
 const session = require('express-session');
 require('./config/passport')
+const config = require('./config/config')
 const mongoose = require('mongoose')
 const passport = require('passport')
+
 mongoose.Promise = global.Promise
 mongoose.connect('mongodb://localhost/MOBY')
 const app = express();
@@ -24,6 +26,7 @@ app.set('view engine', 'handlebars');
 // - body-parser needed to catch and to treat information inside req.body
 
 app.use(bodyParser.json());
+app.use(config.activateCors);
 app.use(bodyParser.urlencoded({ extended: false }));
 let busboy     = require('connect-busboy');
 app.use(busboy());

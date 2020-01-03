@@ -130,6 +130,25 @@ module.exports = {
             })
 
 
+    }, recherchePageMedia: async function(req,res){
+        await processMedia.rechercheMedia({userID : req.user._id})
+            .then((data)=>{
+                res.format ({
+                    'application/json': function() {
+                        res.send({ data: data });
+                    },'text/html': function() {
+                        let dataF = []
+
+                        for(let x in data) dataF.push(data[x].nomRessource)
+                        res.render('Parse',{data:data});
+                    }
+                });
+
+            },err=>{
+
+            })
+
+
     },
     parseMedia: async function(req,res){
         //let texte = await parserMedia("Ressources\\Media\\files\\"+req.body.select2)
@@ -221,6 +240,7 @@ module.exports = {
                       newName = filename.replace(' ','-')
                     fstream=  fs.createWriteStream(path.join(__dirname+'/files',newName ))
                 }
+
                 file.pipe(fstream);
                 //enregistrement le fichier dans la base de données avec l'ID du user
                 processMedia.creeMedia({nomRessource : newName,userID : req.user._id})
@@ -231,7 +251,7 @@ module.exports = {
                     //si il y a une erreur dans l'upload
                     if (error) {
                         console.log('erruuurfile',error)
-                        res.status(400).json(error)
+                        res.status(402).json(error)
 
                     } else {
                         // --- Update the object to get the link
@@ -254,7 +274,7 @@ module.exports = {
 
             });
         } catch (error) {
-            res.status(400).json(error)
+            res.status(401).json(error)
         }
     }
 }
