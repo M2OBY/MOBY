@@ -104,7 +104,31 @@ module.exports = {
         } catch (error) {
             next(error)
         }
-    },
+    },async affichageProfil (req,res,next){
+    try{
+
+        let user= await processUser.affichageUser(req.body.email)
+            .then((data)=>{
+                if(data!=null){
+                    console.log("data",data)
+                    res.format ({
+                        'application/json': function() {
+                            res.send({ data: data });
+                        }
+                    });
+
+                }
+
+            })
+
+
+        //return user
+
+    }catch (error) {
+        next(error)
+    }
+},
+
     async verifyUser(req, res,next){
         try {
 

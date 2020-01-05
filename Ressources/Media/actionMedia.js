@@ -154,7 +154,7 @@ module.exports = {
         //let texte = await parserMedia("Ressources\\Media\\files\\"+req.body.select2)
         let rows = {}; // indexed by y-position
         let texte=""
-        new pdfreader.PdfReader().parseFileItems("Ressources\\Media\\files\\"+req.body.select2, function(
+        new pdfreader.PdfReader().parseFileItems("Ressources\\Media\\files\\"+req.body.ficheAParser, function(
             err,
             item
         ) {
