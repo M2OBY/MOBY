@@ -276,5 +276,18 @@ module.exports = {
         } catch (error) {
             res.status(401).json(error)
         }
+    },
+
+    supprimerMedia : async function(req,res){
+        let mediaID = req.params.mediaID
+        const resultat = await processMedia.afficherMediaName(mediaID)
+        console.log("Nom File :", resultat)
+        //Voir pour mettre une condition de test avant la suppression
+        fs.unlinkSync(path.join(__dirname+'/files', resultat ));
+        console.log('file deleted');
+        // Supprimer le fichier dans la base de données
+        processMedia.supprimerMedia(mediaID);
+        res.json({message: 'Fichier Supprimée'})
+        
     }
 }

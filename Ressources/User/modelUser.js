@@ -4,17 +4,17 @@ const bcrypt = require('bcryptjs');
 const userSchema = new Schema(
     {
         nom: String,
-        prenom :String,
+       // prenom :String,
         email : String,
         password : String,
         username :String,
-        dateNaissance : String,
-        adresse1 : String,
-        adresse2 : String,
-        codePostale : String,
-        ville : String,
-        mobile: String,
-        fixe:String,
+       // dateNaissance : String,
+        //adresse1 : String,
+        //adresse2 : String,
+       // codePostale : String,
+        //ville : String,
+       // mobile: String,
+        //fixe:String,
         active:Boolean,
         secretToken :String
     }, {

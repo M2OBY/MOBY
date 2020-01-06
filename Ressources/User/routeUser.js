@@ -20,7 +20,7 @@ const isAuthenticated = (req,res,next) => {
 const isNotAuthenticated = (req,res,next) => {
 
     if(req.isAuthenticated()){
-        req.flash('error','désoler vous êtes déjà connecter')
+        req.flash('error','désolé vous êtes déjà connecté')
         res.redirect('/')
 
     }else{
@@ -38,6 +38,7 @@ router.route('/register')
 
 router.route('/login')
   .get(isNotAuthenticated,(req, res) => {
+      //console.log("YOUPIIIIIIIIIIIIIIIIIIIII")
     res.render('login');
   })
     .post(passport.authenticate('local',{ successRedirect : 'dashboard'}))

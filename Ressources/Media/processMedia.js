@@ -46,6 +46,7 @@ module.exports = {
                 }else if(!result) reject (err)
             })
         })},
+<<<<<<< HEAD
     rechercheMedia: (media) => {
         return new Promise( (resolve, reject) =>{
             const aggregatorOpts = [{
@@ -71,4 +72,40 @@ module.exports = {
                 }else if(!result) reject (err)
             })*/
         })}
+=======
+
+    supprimerMedia : (id) => {
+        let name
+
+        Media.remove({_id: id}, (err) => {
+            if (err){
+                    return err;
+                }
+        
+               return Media;
+            })
+    },
+
+    afficherMediaName: (id) => {
+         return new Promise( (resolve, reject) =>{
+
+            Media.findById({_id: id},(err, result) => {
+                if (err) {
+                    reject(err)
+                } else if(result) {
+                    console.log("nom fichier", result.nomRessource)
+                    resolve(result.nomRessource)
+                }else if(!result) reject (err)
+            })
+        })} 
+
+       /*  Media.findById({_id: id}, (err) => {
+            if (err){
+                    return err;
+                }
+                console.log("nom fichier", result.nomRessource)
+               return Media;
+            }) */
+        
+>>>>>>> 009568fd2b93d6d661f70a81556d2966f43ed7f5
 }

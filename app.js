@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const expressHandlebars = require('express-handlebars');
 const flash = require('connect-flash');
 const session = require('express-session');
+const ficConfig = require("../MOBY-back/config/config")
 require('./config/passport')
 const config = require('./config/config')
 const mongoose = require('mongoose')
@@ -42,7 +43,8 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(flash());
-
+//*********Config********* */
+app.use(ficConfig.activateCors);
 //Affichage des alertes/ variable pour le user
 app.use((req,res,next) => {
 
@@ -61,5 +63,4 @@ app.use('/media', require('./Ressources/Media/routeMedia'));
 app.use((req, res, next) => {
   res.render('notFound');
 });
-
 app.listen(5000, () => console.log('Server started listening on port 5000!'));

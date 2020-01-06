@@ -56,6 +56,7 @@ router.route('/parse/')
 router.route('/find/')
     .post(isAuthenticated,(req, res) => {
 
+<<<<<<< HEAD
         actionMedia.parseMedia(req,res)
     })
 
@@ -67,5 +68,13 @@ router.route('/find/')
 
         // res.render('Parse',{username:req.user.username});
     })
+=======
+    router.route('/supprimer/:mediaID')
+    .delete(isAuthenticated,async(req, res) => {
+
+        actionMedia.supprimerMedia(req,res)
+    })
+
+>>>>>>> 009568fd2b93d6d661f70a81556d2966f43ed7f5
 
 module.exports = router;
