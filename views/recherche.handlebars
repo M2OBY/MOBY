@@ -1,4 +1,4 @@
-<form class="form-signin" action="/Media/parse" method="POST">
+<form class="form-signin" action="/Media/find" method="POST">
     <h2 class="form-signin-heading">Parser fichier</h2>
 
     <label for="nomFichier" class="sr-only">Selectionner un fichier</label>
@@ -6,7 +6,7 @@
 
     <br/>
 {{#if data}}
-    <select name="ficheAParser" size="3">
+    <select name="select2" size="3">
         {{#each data}}
             <option >{{nomRessource}}</option>
         {{/each}}

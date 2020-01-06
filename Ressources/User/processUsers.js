@@ -32,5 +32,18 @@ module.exports = {
                         resolve(result)
                     }else if(!result) reject (err)
                 })
+        })},
+    affichageUser: (email) => {
+        return new Promise( (resolve, reject) =>{
+
+            User.findOne({
+               email : email
+            },(err, result) => {
+                if (err) {
+                    reject(err)
+                } else if(result) {
+                    resolve(result)
+                }else if(!result) reject (err)
+            })
         })}
 }

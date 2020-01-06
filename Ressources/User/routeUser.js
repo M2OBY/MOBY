@@ -41,19 +41,22 @@ router.route('/login')
       //console.log("YOUPIIIIIIIIIIIIIIIIIIIII")
     res.render('login');
   })
-    .post(passport.authenticate('local',{
-        successRedirect : 'dashboard',
-        failureRedirect : 'login',
-        failureFlash : true
-    }))
+    .post(passport.authenticate('local',{ successRedirect : 'dashboard'}))
 
+router.route('/profil')
+    .post(isNotAuthenticated,(req, res,next) => {
+        console.log("profil requette non connecté : ",req.body)
+        actionUser.affichageProfil(req,res,next);
+    })
+    .post(isAuthenticated,(req, res,next) => {
+        console.log("profil requette : ",req.body)
+        actionUser.affichageProfil(req,res,next);
+    })
 
 router.route('/dashboard')
-    .get(isAuthenticated,(req, res) => {
-        console.log('req.user',req.user)
-
-
-        res.render('dashboard',{username:req.user.username});
+    .get((req, res) => {
+        console.log('req..user',req)
+       res.render('dashboard',{username:req.user.username});
     })
 
 router.route('/verify')
