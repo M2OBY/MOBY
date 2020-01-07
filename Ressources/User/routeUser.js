@@ -77,6 +77,12 @@ router.route('/logout')
         res.redirect('/')
     })
 
+    router.route('/desactiver/:userID')
+    .put(isAuthenticated,async(req, res) => {
+
+       actionUser.desactiverCompte(req,res)
+    })
+
 
 
 module.exports = router;

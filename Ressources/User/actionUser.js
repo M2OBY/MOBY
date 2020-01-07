@@ -151,6 +151,14 @@ module.exports = {
         } catch (error) {
             next(error)
         }
+    },
+
+    desactiverCompte : async function(req,res){
+        let userID = req.params.userID
+        
+        processUser.desactiverCompte(userID);
+        res.json({message: 'Utilisateur désactivé'})
+
     }
 }
 

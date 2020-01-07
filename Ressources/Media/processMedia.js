@@ -86,15 +86,16 @@ module.exports = {
     afficherMediaName: (id) => {
          return new Promise( (resolve, reject) =>{
 
-            Media.findById({_id: id},(err, result) => {
+            Media.findOne({nomRessource: id},(err, result) => {
                 if (err) {
                     reject(err)
                 } else if(result) {
-                    console.log("nom fichier", result.nomRessource)
-                    resolve(result.nomRessource)
+                    console.log("ID du fichier", result._id)
+                    resolve(result._id)
                 }else if(!result) reject (err)
             })
-        })} ,}
+        })} ,
+        }
 
        /*  Media.findById({_id: id}, (err) => {
             if (err){
