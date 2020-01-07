@@ -87,7 +87,7 @@ let myCallback = function(texte,req,res) {
             }
 
 
-              requette= processMedia.modifierMedia(pages,req.body.select2)
+              requette= processMedia.modifierMedia(pages,req.body.ficheAParser)
 
         }
         if(requette) {
