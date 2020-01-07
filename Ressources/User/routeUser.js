@@ -54,7 +54,7 @@ router.route('/profil')
     })
 
 router.route('/dashboard')
-    .get((req, res) => {
+    .get(isAuthenticated,(req, res) => {
         console.log('req..user',req)
        res.render('dashboard',{username:req.user.username});
     })

@@ -1,6 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const actionMedia = require ('./actionMedia')
+let fs      = require('fs'),
+    path    = require('path'),
+    async   = require('async');
 
 const isAuthenticated = (req,res,next) => {
 
@@ -74,6 +77,29 @@ router.route('/find/')
         actionMedia.supprimerMedia(req,res)
     })
 
-
+// -- LIRE UN REPERTOIRE
+     router.route('/files')
+         .get( function (req, res) {
+    let myDir = [];
+    fs.readdir(path.join(__dirname+'/files'),(err, result)=>{
+        async.each(result,(file, callback) => {
+            // --
+            fs.stat(path.join(__dirname+'/files',file), (err, stat) => {
+                if(stat.isFile()){
+                    myDir.push('http://0.0.0.0:5000/media/files/'+file+'');
+                }
+                callback()
+            })
+        },(err)=>{
+            res.status(200).json({repo : myDir})
+        })
+    })
+})
+// -- Read File
+router.route('/files/:path')
+    .get( function (req, res) {
+        console.log("filesPath")
+    res.sendFile(path.join(__dirname+'/files',req.params.path))
+});
 
 module.exports = router;
