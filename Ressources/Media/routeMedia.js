@@ -58,7 +58,6 @@ router.route('/parse/')
     })
 router.route('/find/')
     .post(isAuthenticated,(req, res) => {
-
         actionMedia.parseMedia(req,res)
     })
 
@@ -71,6 +70,8 @@ router.route('/find/')
         // res.render('Parse',{username:req.user.username});
     })
 
+
+    router.route('/supprimer/')
     router.route('/supprimer/:mediaID')
     .delete(isAuthenticated,async(req, res) => {
 
@@ -101,5 +102,6 @@ router.route('/files/:path')
         console.log("filesPath")
     res.sendFile(path.join(__dirname+'/files',req.params.path))
 });
+
 
 module.exports = router;

@@ -45,5 +45,17 @@ module.exports = {
                     resolve(result)
                 }else if(!result) reject (err)
             })
-        })}
+        })},
+
+        desactiverCompte : (id) => {
+
+            User.findOneAndUpdate({_id: id}, {active : false}, 
+                (err) => {
+                if (err){
+                        return err;
+                    }
+            
+                   return User;
+                })
+        }
 }

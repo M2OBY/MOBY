@@ -158,7 +158,6 @@ module.exports = {
             err,
             item
         ) {
-
             if (!item || item.page) {
                 // end of file, or page
                 printRows(rows);
@@ -279,15 +278,16 @@ module.exports = {
     },
 
     supprimerMedia : async function(req,res){
-        let mediaID = req.params.mediaID
-        const resultat = await processMedia.afficherMediaName(mediaID)
-        console.log("Nom File :", resultat)
+        let name = req.body.ficheAParser
+        console.log("Nom File :", name)
+        const fileID = await processMedia.afficherMediaName(name)
         //Voir pour mettre une condition de test avant la suppression
-        fs.unlinkSync(path.join(__dirname+'/files', resultat ));
+        fs.unlinkSync(path.join(__dirname+'/files', name ));
         console.log('file deleted');
         // Supprimer le fichier dans la base de données
-        processMedia.supprimerMedia(mediaID);
+        processMedia.supprimerMedia(fileID);
         res.json({message: 'Fichier Supprimée'})
         
-    }
+    },
+
 }
