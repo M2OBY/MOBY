@@ -123,7 +123,7 @@ module.exports = {
             })
 
 
-        //return user
+        return user
 
     }catch (error) {
         next(error)
@@ -144,7 +144,7 @@ module.exports = {
                 return
             }
             user.active = true
-            user.secretToken = '';
+            //user.secretToken = '';
             await user.save()
             req.flash('success', 'Merci ! maintenant vous pouvez vous connecter')
             res.redirect('login')

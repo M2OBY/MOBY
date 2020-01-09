@@ -27,7 +27,14 @@ app.set('view engine', 'handlebars');
 // - body-parser needed to catch and to treat information inside req.body
 
 app.use(bodyParser.json());
-app.use(config.activateCors);
+//Définition des CORS
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
 app.use(bodyParser.urlencoded({ extended: false }));
 let busboy     = require('connect-busboy');
 app.use(busboy());
