@@ -85,13 +85,19 @@ router.route('/logout')
         req.flash('success', 'déconnection avec succès, à bientôt ! ')
 
         res.redirect('/')
-    })
+    });
 
     router.route('/desactiver/:userID')
     .put(isAuthenticated,async(req, res) => {
 
        actionUser.desactiverCompte(req,res)
-    })
+    });
+
+    router.route('/modifier/:userID')
+    .put(isAuthenticated,async(req, res) => {
+
+       actionUser.updateCompte(req,res)
+    });
 
 
 

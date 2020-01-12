@@ -159,6 +159,15 @@ module.exports = {
         processUser.desactiverCompte(userID);
         res.json({message: 'Utilisateur désactivé'})
 
+    },
+
+    updateCompte : async function(req,res){
+        let userID = req.params.userID
+        
+        const compte = processUser.updateCompte(userID, req.body);
+        res.json({message: 'Compte mis à jour!'})
+        res.send(compte);
+
     }
 }
 

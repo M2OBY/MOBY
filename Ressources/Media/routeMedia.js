@@ -72,7 +72,6 @@ router.route('/find/')
 
 
     router.route('/supprimer/')
-    router.route('/supprimer/:mediaID')
     .delete(isAuthenticated,async(req, res) => {
 
         actionMedia.supprimerMedia(req,res)

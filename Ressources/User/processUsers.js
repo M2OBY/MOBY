@@ -57,5 +57,20 @@ module.exports = {
             
                    return User;
                 })
+        },
+
+        updateCompte : (id, body)=> {
+
+            User.findOneAndUpdate({_id : id},
+                body,
+                  (err) => {
+    
+               if(err){
+    
+                  return err;
+    
+               }
+              return User; 
+         });
         }
 }
