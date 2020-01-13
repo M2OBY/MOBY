@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan')
 const path = require('path');
+cors = require('cors')
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const expressHandlebars = require('express-handlebars');
@@ -27,14 +28,16 @@ app.set('view engine', 'handlebars');
 // - body-parser needed to catch and to treat information inside req.body
 
 app.use(bodyParser.json());
-//Définition des CORS
+
+app.use(cors());
 app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
   next();
 });
+
 app.use(bodyParser.urlencoded({ extended: false }));
 let busboy     = require('connect-busboy');
 app.use(busboy());
@@ -47,6 +50,11 @@ app.use(session({
   saveUninitialized: false,
   resave: false
 }));
+
+
+// passport config
+require('./config/validation/passport')(passport);
+
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(flash());

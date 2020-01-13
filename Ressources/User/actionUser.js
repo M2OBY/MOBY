@@ -3,12 +3,14 @@
 
 //pour controler les inputs du password
 const Joi    = require('joi')
+const bcrypt = require('bcryptjs');
 const User = require('./modelUser')
 const processUser = require('./processUsers')
-const passport = require('passport')
+const jwt = require('jsonwebtoken');
 const randomstring = require('randomstring')
 const mailer = require('../../misc/mailer')
 const mailHTML = require('./mailRegistration')
+const secret = require('../../config/secret').secretKey;
 const userSchema = Joi.object().keys({
       email : Joi.string().email().required(),
       username : Joi.string().required(),
@@ -16,6 +18,8 @@ const userSchema = Joi.object().keys({
       confirmationPassword : Joi.any().valid(Joi.ref('password')).required()
 })
 
+const validateRegisterInput = require('../../config/validation/register');
+const validateLoginInput = require('../../config/validation/login');
 module.exports = {
 //===========Cette methode permet d'ajouter un utlisateur ds la BDD========
 //=========================================================================
@@ -151,6 +155,52 @@ module.exports = {
         } catch (error) {
             next(error)
         }
+    },
+    async loginUser(req, res,next){
+        const { errors, isValid } = validateLoginInput(req.body);
+
+        // Check validation
+        if (!isValid) {
+            return res.status(400).json(errors);
+        }
+
+        const email = req.body.email;
+        const password = req.body.password;
+
+        // find user by email
+        User.findOne({email: email})
+            .then(user => {
+                if (!user) {
+                    errors.email = 'User email not found!';
+                    return res.status(404).json(errors);
+                }
+                // check password
+                bcrypt.compare(password, user.password)
+                    .then(isMatch => {
+                        if (isMatch) {
+                            //res.json({msg: 'Success'})
+
+                            const payload = {
+                                id: user.id,
+                                name: user.name,
+
+                            };
+
+                            // sign token
+                            jwt.sign(payload, secret, {expiresIn: 3600}, (err, token) => {
+                                console.log("token",token)
+                                res.json({
+                                    success: true,
+                                    secretToken:token
+                                })
+                            });
+                        } else {
+                            errors.password = 'Password is incorrect';
+                            return res.status(400).json(errors);
+                        }
+                    })
+            })
+
     },
 
     desactiverCompte : async function(req,res){

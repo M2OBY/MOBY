@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const actionUser = require ('./actionUser')
 const passport = require('passport')
-
+const jwt = require('jsonwebtoken');
 //Autorisation
 const isAuthenticated = (req,res,next) => {
 
@@ -41,20 +41,18 @@ router.route('/login')
       //console.log("YOUPIIIIIIIIIIIIIIIIIIIII")
     res.render('login');
   })
-    .post(passport.authenticate('local'),(req,res)=>{
-        console.log("reqLogin",req.user)
-        req.session.save()
-        res.format ({
-            'application/json': function() {
-                res.send({ user: req.user });
-            },'text/html': function() {
+ .post( (req, res,next) => {
 
-                res.redirect('dashboard');
-            }
-        });
-
-
-    })
+actionUser.loginUser(req,res,next)
+});
+router.route('/current')
+    .get(passport.authenticate('jwt', { session: true }), (req, res) => {
+    res.json({
+        id: req.user.id,
+        name: req.user.name,
+        email: req.user.email
+    });
+});
 
 router.route('/profil')
     .post((req, res,next) => {
