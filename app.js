@@ -46,7 +46,10 @@ app.use(passport.session())
 app.use(flash());
 //*********Config********* */
 app.use(ficConfig.activateCors);
-//Affichage des alertes/ variable pour le user
+//Affichage des alertes/ variable pour le user*
+
+require('./config/validation/passport')(passport)
+
 app.use((req,res,next) => {
 
   res.locals.success_messages = req.flash('success')

@@ -3,6 +3,9 @@ const router = express.Router()
 const actionUser = require ('./actionUser')
 const passport = require('passport')
 const jwt = require('jsonwebtoken');
+const JwtStrategy = require('passport-jwt').Strategy;
+
+
 const secret = require('../../config/secret').secretKey;
 
 //Autorisation
@@ -49,7 +52,7 @@ router.route('/login')
             const payload = {
                 id: req.user.id,
                 name: req.user.name,
-
+                email: req.user.email
             };
 
             // sign token
@@ -76,9 +79,17 @@ router.route('/login')
 
 
     })
+router.route('/current')
+    .get(passport.authenticate('jwt', { session: true }), (req, res) => {
+        res.json({
+            id: req.user.id,
+            name: req.user.name,
+            email: req.user.email
+        });
+    });
 
 router.route('/profil')
-    .post((req, res,next) => {
+    .post(passport.authenticate('jwt', { session: true }),(req, res,next) => {
         console.log("profil requette connecté : ",req.isAuthenticated())
         actionUser.affichageProfil(req,res,next);
     })
