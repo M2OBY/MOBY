@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const actionUser = require ('./actionUser')
 const passport = require('passport')
+const jwt = require('jsonwebtoken');
+const secret = require('../../config/secret').secretKey;
 
 //Autorisation
 const isAuthenticated = (req,res,next) => {
@@ -42,16 +44,35 @@ router.route('/login')
     res.render('login');
   })
     .post(passport.authenticate('local'),(req,res)=>{
-        console.log("reqLogin",req.user)
-        req.session.save()
-        res.format ({
-            'application/json': function() {
-                res.send({ user: req.user });
-            },'text/html': function() {
+        if(req.user){
 
-                res.redirect('dashboard');
-            }
-        });
+            const payload = {
+                id: req.user.id,
+                name: req.user.name,
+
+            };
+
+            // sign token
+            jwt.sign(payload, secret, {expiresIn: 3600}, (err, token) => {
+                console.log("token",token)
+
+                res.format ({
+                    'application/json': function() {
+                        res.send({
+                            user: req.user,
+                            success: true,
+                            secretToken:token });
+                    },'text/html': function() {
+
+                        res.redirect('dashboard');
+                    }
+                });
+
+            });
+        }
+        console.log("reqLogin",req.user,"auten:",req.isAuthenticated())
+
+
 
 
     })
