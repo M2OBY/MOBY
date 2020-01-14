@@ -2,10 +2,15 @@ const express = require('express')
 const router = express.Router()
 const actionUser = require ('./actionUser')
 const passport = require('passport')
+<<<<<<< HEAD
 const withAuth = require('../../config/middleware').default;
 const jwt = require('jsonwebtoken');
 const User = require('./modelUser')
 const cors = require ("cors")
+=======
+const jwt = require('jsonwebtoken');
+const secret = require('../../config/secret').secretKey;
+>>>>>>> 5aa76873b0bdb43094e7f1bf14293292482f7aac
 
 router.use(cors());
 //Autorisation
@@ -48,6 +53,7 @@ router.route('/login')
     res.render('login');
   })
     .post(passport.authenticate('local'),(req,res)=>{
+<<<<<<< HEAD
         console.log("reqLogin",req.user)
         console.log("Connexion: ", req.isAuthenticated())
         req.session.save()
@@ -59,6 +65,37 @@ router.route('/login')
                 res.redirect('dashboard');
             }
         });
+=======
+        if(req.user){
+
+            const payload = {
+                id: req.user.id,
+                name: req.user.name,
+
+            };
+
+            // sign token
+            jwt.sign(payload, secret, {expiresIn: 3600}, (err, token) => {
+                console.log("token",token)
+
+                res.format ({
+                    'application/json': function() {
+                        res.send({
+                            user: req.user,
+                            success: true,
+                            secretToken:token });
+                    },'text/html': function() {
+
+                        res.redirect('dashboard');
+                    }
+                });
+
+            });
+        }
+        console.log("reqLogin",req.user,"auten:",req.isAuthenticated())
+
+
+>>>>>>> 5aa76873b0bdb43094e7f1bf14293292482f7aac
 
     })
 

@@ -6,9 +6,9 @@ const bodyParser = require('body-parser');
 const expressHandlebars = require('express-handlebars');
 const flash = require('connect-flash');
 const session = require('express-session');
-const ficConfig = require("../MOBY-back/config/config")
+const ficConfig = require("./config/config")
 require('./config/passport')
-const config = require('./config/config')
+
 const mongoose = require('mongoose')
 const passport = require('passport')
 
@@ -28,13 +28,7 @@ app.set('view engine', 'handlebars');
 
 app.use(bodyParser.json());
 //Définition des CORS
-app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  next();
-});
+app.use(ficConfig.activateCors);
 app.use(bodyParser.urlencoded({ extended: false }));
 let busboy     = require('connect-busboy');
 app.use(busboy());
