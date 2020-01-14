@@ -61,16 +61,18 @@ module.exports = {
 
         updateCompte : (id, body)=> {
 
-            User.findOneAndUpdate({_id : id},
-                body,
-                  (err) => {
-    
-               if(err){
-    
-                  return err;
-    
-               }
-              return User; 
-         });
-        }
+    return new Promise( (resolve, reject) =>{
+
+        User.findOneAndUpdate({
+            _id : id
+        },body,(err, result) => {
+            if (err) {
+                reject(err)
+            } else if(result) {
+                resolve(result)
+            }else if(!result) reject (err)
+        })
+    })}
+
+
 }

@@ -79,24 +79,16 @@ router.route('/login')
 
 
     })
-router.route('/current')
-    .get(passport.authenticate('jwt', { session: true }), (req, res) => {
-        res.json({
-            id: req.user.id,
-            name: req.user.name,
-            email: req.user.email
-        });
-    });
-
+/*
 router.route('/profil')
-    .post(passport.authenticate('jwt', { session: true }),(req, res,next) => {
+    .post(passport.authenticate('local'),(req, res,next) => {
         console.log("profil requette connecté : ",req.isAuthenticated())
         actionUser.affichageProfil(req,res,next);
     })
-
+*/
 
 router.route('/dashboard')
-    .get(isAuthenticated,(req, res) => {
+    .get(passport.authenticate('local'),(req, res) => {
         console.log('req..user',req)
        res.render('dashboard',{username:req.user.username});
     })
@@ -106,13 +98,13 @@ router.route('/verify')
         console.log('req.user',req.user)
         res.render('verify',{token:req.param("token")});
     })
-    .post( (req,res,next)=> {
+    .post(isNotAuthenticated, (req,res,next)=> {
         actionUser.verifyUser(req,res,next);
 
     });
 
 router.route('/logout')
-    .get(isAuthenticated,(req, res) => {
+    .get(passport.authenticate('local'),(req, res) => {
         req.logout()
         req.flash('success', 'déconnection avec succès, à bientôt ! ')
 
@@ -120,13 +112,13 @@ router.route('/logout')
     });
 
     router.route('/desactiver/:userID')
-    .put(isAuthenticated,async(req, res) => {
+    .put(passport.authenticate('local'),async(req, res) => {
 
        actionUser.desactiverCompte(req,res)
     });
 
-    router.route('/modifier/:userID')
-    .put(isAuthenticated,async(req, res) => {
+    router.route('/profil')
+    .post(passport.authenticate('local'),async(req, res) => {
 
        actionUser.updateCompte(req,res)
     });

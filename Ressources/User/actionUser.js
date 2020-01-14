@@ -162,10 +162,10 @@ module.exports = {
     },
 
     updateCompte : async function(req,res){
-        let userID = req.params.userID
-        
-        const compte = processUser.updateCompte(userID, req.body);
-        res.json({message: 'Compte mis à jour!'})
+        let userID = req.user.id
+        console.log('id user function update ::', userID)
+        const compte = await processUser.updateCompte(userID, req.body);
+        //res.json({message: 'Compte mis à jour!'})
         res.send(compte);
 
     }
