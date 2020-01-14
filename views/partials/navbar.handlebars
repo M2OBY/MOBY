@@ -5,16 +5,16 @@
     <ul class="nav nav-justified">
 
       <li class="active"><a href="/">Home</a></li>
-      {{#if isAuthenticated}}
+        {{#if isAuthenticated}} 
         <li><a href="/users/dashboard">Dashboard</a></li>
         <li><a href="/media">upload</a></li>
         <li><a href="/media/parse">parser</a></li>
           <li><a href="/media/find">Recherche</a></li>
         <li><a href="/users/logout">Logout</a></li>
-      {{else}}
+       {{else}}
         <li><a href="/users/register">Sign Up</a></li>
         <li><a href="/users/login">Sign In</a></li>
-      {{/if}}
+       {{/if}}
     </ul>
   </nav>
 </div>

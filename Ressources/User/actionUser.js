@@ -3,12 +3,16 @@
 
 //pour controler les inputs du password
 const Joi    = require('joi')
+const bcrypt = require('bcryptjs');
 const User = require('./modelUser')
 const processUser = require('./processUsers')
-const passport = require('passport')
+const jwt = require('jsonwebtoken');
 const randomstring = require('randomstring')
 const mailer = require('../../misc/mailer')
 const mailHTML = require('./mailRegistration')
+const isAuth = require('../../config/middleware')
+//const secret = require('../../config/secret').secretKey;
+const secret = 'mysecretsshhh';
 const userSchema = Joi.object().keys({
       email : Joi.string().email().required(),
       username : Joi.string().required(),
@@ -168,8 +172,21 @@ module.exports = {
         res.json({message: 'Compte mis à jour!'})
         res.send(compte);
 
-    }
+    },
+
+    loginUser : async function(req,res){
+
+        processUser.loginUser(req).then(log =>{
+            console.log(res);
+            res.send(log)
+        });
+    },
+
+   
+
+
 }
+
 
 
 
