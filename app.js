@@ -7,7 +7,7 @@ const expressHandlebars = require('express-handlebars');
 const flash = require('connect-flash');
 const session = require('express-session');
 const ficConfig = require("./config/config")
-require('./config/passport')
+require('./config/validation/passport')
 
 const mongoose = require('mongoose')
 const passport = require('passport')
@@ -46,7 +46,10 @@ app.use(passport.session())
 app.use(flash());
 //*********Config********* */
 app.use(ficConfig.activateCors);
-//Affichage des alertes/ variable pour le user
+//Affichage des alertes/ variable pour le user*
+
+//require('./config/validation/passport')(passport)
+
 app.use((req,res,next) => {
 
   res.locals.success_messages = req.flash('success')

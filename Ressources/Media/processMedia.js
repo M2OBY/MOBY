@@ -72,16 +72,17 @@ module.exports = {
             })*/
         })},
     supprimerMedia : (id) => {
-        let name
-
-        Media.remove({_id: id}, (err) => {
+    return new Promise( (resolve, reject) =>{
+        Media.remove({_id: id}, (err, result) => {
             if (err){
-                    return err;
-                }
-        
-               return Media;
+                   reject (err);
+                }else if(result){
+                    resolve(result);
+                }else if(!result){ reject (err);}
             })
-    },
+    })
+
+},
 
     afficherMediaName: (id) => {
          return new Promise( (resolve, reject) =>{
@@ -92,16 +93,10 @@ module.exports = {
                 } else if(result) {
                     console.log("ID du fichier", result._id)
                     resolve(result._id)
-                }else if(!result) reject (err)
+                }else if(!result) { reject (err)
+                }
             })
         })} ,
-        }
+    }
 
-       /*  Media.findById({_id: id}, (err) => {
-            if (err){
-                    return err;
-                }
-                console.log("nom fichier", result.nomRessource)
-               return Media;
-            }) */
 

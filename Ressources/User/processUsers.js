@@ -3,25 +3,6 @@
 
 const User = require('./modelUser')
 
-//*********************************** */
-const Joi    = require('joi')
-const bcrypt = require('bcryptjs');
-//const User = require('./modelUser')
-const jwt = require('jsonwebtoken');
-const randomstring = require('randomstring')
-const mailer = require('../../misc/mailer')
-const mailHTML = require('./mailRegistration')
-//const secret = require('../../config/secret').secretKey;
-const secret = 'mysecretsshhh';
-
-const userSchema = Joi.object().keys({
-    email : Joi.string().email().required(),
-    username : Joi.string().required(),
-    password : Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
-    confirmationPassword : Joi.any().valid(Joi.ref('password')).required()
-})
-//************************************ */
-
 module.exports = {
     //******************************Creer un compte************************************************************ */
     creerUser: (users) => {
@@ -67,77 +48,32 @@ module.exports = {
         })},
 
         desactiverCompte : (id) => {
-
+        return new Promise( (resolve, reject) =>{
             User.findOneAndUpdate({_id: id}, {active : false}, 
-                (err) => {
+                (err, result) => {
                 if (err){
-                        return err;
+                        reject (err);
                     }
             
-                   return User;
-                })
-        },
+                   resolve (result);
+            }) 
+        })
+    },
 
         updateCompte : (id, body)=> {
 
-            User.findOneAndUpdate({_id : id},
-                body,
-                  (err) => {
-    
-               if(err){
-    
-                  return err;
-    
-               }
-              return User; 
-         });
-        },
+    return new Promise( (resolve, reject) =>{
 
-        loginUser(req, res,next){
+        User.findOneAndUpdate({
+            _id : id
+        },body,(err, result) => {
+            if (err) {
+                reject(err)
+            } else if(result) {
+                resolve(result)
+            }else if(!result) reject (err)
+        })
+    })}
 
-            return User.findOne({
 
-                email: req.body.email
-        
-            })
-        
-                .then(user => {
-        
-                    if (user) {
-        
-                        if (bcrypt.compareSync(req.body.password, user.password)) {
-        
-                            const payload = {
-        
-                                _id: user._id,
-        
-                                email: user.email,
-        
-        
-                            }
-        
-                            let token = jwt.sign(payload, secret, {
-        
-                                expiresIn: 3600
-        
-                            });
-        
-                             return token
-        
-                        } else {
-        
-                            return null
-        
-                        }
-        
-                    } else {
-        
-                       return null
-        
-                    }
-        
-                });
-            
-    
-             },
 }

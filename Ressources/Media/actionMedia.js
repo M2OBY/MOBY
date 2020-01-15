@@ -281,12 +281,20 @@ module.exports = {
         let name = req.body.ficheAParser
         console.log("Nom File :", name)
         const fileID = await processMedia.afficherMediaName(name)
-        //Voir pour mettre une condition de test avant la suppression
-        fs.unlinkSync(path.join(__dirname+'/files', name ));
-        console.log('file deleted');
-        // Supprimer le fichier dans la base de données
-        processMedia.supprimerMedia(fileID);
-        res.json({message: 'Fichier Supprimée'})
+        .then((result)=>{
+            //res.status(200).json({sucess :'Fichier Supprimée'})
+            fs.unlinkSync(path.join(__dirname+'/files', name ));
+            console.log('file deleted');
+            // Supprimer le fichier dans la base de données
+                processMedia.supprimerMedia(fileID)
+                .then((result)=>{
+                    res.status(200).json({sucess :'Fichier Supprimée'})
+                }).catch((typeErr)=>{
+                    res.status(400).json(typeErr)
+                })
+        }).catch((typeErr)=>{
+            res.status(400).json(typeErr)
+        })
         
     },
 

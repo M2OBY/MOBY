@@ -6,11 +6,11 @@ const Joi    = require('joi')
 const bcrypt = require('bcryptjs');
 const User = require('./modelUser')
 const processUser = require('./processUsers')
-const jwt = require('jsonwebtoken');
+//const jwt = require('jsonwebtoken');
 const randomstring = require('randomstring')
 const mailer = require('../../misc/mailer')
 const mailHTML = require('./mailRegistration')
-const isAuth = require('../../config/middleware')
+//const isAuth = require('../../config/middleware')
 //const secret = require('../../config/secret').secretKey;
 const secret = 'mysecretsshhh';
 const userSchema = Joi.object().keys({
@@ -161,26 +161,26 @@ module.exports = {
         let userID = req.params.userID
         
         processUser.desactiverCompte(userID);
-        res.json({message: 'Utilisateur désactivé'})
+        res.json({message: 'Compte désactivé'})
 
     },
 
     updateCompte : async function(req,res){
-        let userID = req.params.userID
-        
-        const compte = processUser.updateCompte(userID, req.body);
-        res.json({message: 'Compte mis à jour!'})
+        let userID = req.user.id
+        console.log('id user function update ::', userID)
+        const compte = await processUser.updateCompte(userID, req.body);
+        //res.json({message: 'Compte mis à jour!'})
         res.send(compte);
 
     },
 
-    loginUser : async function(req,res){
+    /* loginUser : async function(req,res){
 
         processUser.loginUser(req).then(log =>{
             console.log(res);
             res.send(log)
         });
-    },
+    }, */
 
    
 
