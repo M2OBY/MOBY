@@ -1,0 +1,128 @@
+
+
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Style the header */
+header {
+  background-color: #666;
+  padding: 30px;
+  text-align: center;
+  font-size: 35px;
+  color: white;
+}
+.container {
+    width: 1170px;
+    height: 900px;
+}
+/* Create two columns/boxes that floats next to each other */
+form {
+  float: left;
+  width: 30%;
+  height: 657px; /* only for demonstration, should be removed */
+  background: #ccc;
+  padding: 20px;
+}
+
+/* Style the list inside the menu */
+.nav-tabs>li>a {
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+    font-size: 24px;
+}
+article {
+  float: left;
+  padding: 0px;
+  width: 70%;
+  background-color: #f1f1f1;
+      height: 657px; /* only for demonstration, should be removed */
+}
+
+
+
+
+</style>
+
+<header>
+ 
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#afficher" role="tab" aria-controls="home" aria-selected="true">Afficher</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Supprimer</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Partager</a>
+  </li>
+</ul>
+</header>
+
+<section>
+    <article>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="afficher" role="tabpanel" aria-labelledby="home-tab">
+       <embed  id="pdf_file" src="http://192.168.43.95:5000/media/files/coursCPAR21579116552970.pdf" width=800 height=657 type='application/pdf'/>
+
+  </div>
+  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+</div>
+  </article>
+    <div>
+  <form>
+ 
+  <div class="form-group">
+    <label for="selectionAffichage">Example multiple select</label>
+    {{#if dataA}}
+    <select multiple class="form-control" id="selectionAffichage">
+      {{#each dataA}}
+            <option >{{nomRessource}}</option>
+        {{/each}}
+    </select>
+    {{/if}}
+  </div>
+
+    <div class="form-group">
+    <label for="selectionPartage">Example multiple select</label>
+    {{#if dataB}}
+    <select multiple class="form-control" id="selectionPartage">
+      {{#each dataB}}
+            <option >{{nomRessource}}</option>
+        {{/each}}
+    </select>
+    {{/if}}
+  </div>
+
+  </div>
+
+</form>
+</div>
+<script>
+    'use strict';
+ 
+    document.addEventListener( "DOMContentLoaded", ev => {
+      
+    }, false );
+    
+    window.addEventListener( "load", ev => {
+      
+      document.querySelector( "#selectionAffichage" ).addEventListener( "change", ev => {
+        let n = ev.target.value;
+        console.log("doc",document.querySelector('embed#pdf_file').src = 'http://192.168.43.95:5000/media/files/'+n)
+
+      });
+ 
+      kIDUnique();
+    }, false );
+  </script>
+</section>

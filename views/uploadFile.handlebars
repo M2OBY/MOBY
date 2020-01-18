@@ -9,4 +9,24 @@
   <br/>
   
   <button class="btn btn-lg btn-default btn-block" type="submit">upload</button>
+  <embed src="http://www.ipelsht.rnu.tn/useruploads/files/R%C3%A9seaux%20informatique.pdf" width=800 height=500 type='application/pdf'/>
+  {{!-- <iframe src="http://www.ipelsht.rnu.tn/useruploads/files/R%C3%A9seaux%20informatique.pdf" width = "1000" height = "1200"></iframe> --}}
+{{!-- <iframe src="http://0.0.0.0:5000/media/files/coursCPAR21579116552970.pdf" width = "1000" height = "1200"></iframe>
+ --}}
+<a href="file:///D:/setup/Test_reactJS/MOBY-back/Ressources/Media/files/coursCPAR21579116552970.pdf">Notre grille tarifaire (PDF)</a>
 </form>
+<form>
+<button  id="start-record-btn" title="Start Recording">Start Recognition</button>
+</form>
+<script src="../Ressources/Speech/speech.js"></script>
+
+<script>
+  
+   $('#start-record-btn').on('click', function(e) {
+	if (noteContent.length) {
+	  noteContent += ' ';
+	}
+	recognition.start();
+  });
+
+</script>

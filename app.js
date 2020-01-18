@@ -63,6 +63,7 @@ app.use((req,res,next) => {
 app.use('/', require('./routes/index'));
 app.use('/users', require('./Ressources/User/routeUser'));
 app.use('/media', require('./Ressources/Media/routeMedia'));
+
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   res.render('notFound');

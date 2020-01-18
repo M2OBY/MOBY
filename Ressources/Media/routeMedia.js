@@ -1,6 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const actionMedia = require ('./actionMedia')
+const passport = require('passport')
+const jwt = require('jsonwebtoken');
+const JwtStrategy = require('passport-jwt').Strategy;
+const secret = require('../../config/secret').secretKey;
 let fs      = require('fs'),
     path    = require('path'),
     async   = require('async');
@@ -32,7 +36,13 @@ const isNotAuthenticated = (req,res,next) => {
     }
 }
 
-
+router.route('/Gestion')
+    .get(isAuthenticated,(req, res) => {
+        console.log('req.user************************',req.user)
+      actionMedia.afficheMedia(req,res)
+      
+        
+    })
 
 router.route('/')
     .get(isAuthenticated,(req, res) => {
@@ -42,17 +52,24 @@ router.route('/')
     .post( isAuthenticated, (req, res)  => {
         actionMedia.uploadMedia(req,res);
     })
-router.route('/parse/')
-    .post(isAuthenticated,(req, res) => {
 
-        actionMedia.parseMedia(req,res)
+    router.route('/partage')
+    .post( isAuthenticated, (req, res)  => {
+        actionMedia.partageMedia(req,res);
     })
 
+router.route('/parse/')
+     .post(isAuthenticated,(req, res) => {
+
+        actionMedia.parseMedia(req,res)
+    }) 
+
     .get(isAuthenticated,async (req, res) => {
+        
 
          actionMedia.afficheMedia(req,res)
 
-           // res.render('Parse',{data:data})
+           //res.render('Parse',{data:data})
 
        // res.render('Parse',{username:req.user.username});
     })

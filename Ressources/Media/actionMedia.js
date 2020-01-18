@@ -1,5 +1,7 @@
 let fs      = require('fs'),
     path    = require('path');
+let dataA;
+let dataB;
 
 const processMedia = require('./processMedia')
 const office2html = require('office2html')
@@ -114,23 +116,27 @@ let myCallback = function(texte,req,res) {
 module.exports = {
 
     afficheMedia: async function(req,res){
-            await processMedia.afficheMedia({userID : req.user._id})
-            .then((data)=>{
-                res.format ({
-                    'application/json': function() {
-                        res.send({ data: data });
-                    },'text/html': function() {
-                        let dataF = []
+        await processMedia.afficheMediaP({partage : req.user.email}).then((data)=>{
+                 dataB = data
+            });
+            await processMedia.afficheMediaP({userID : req.user._id}).then((data)=>{
+                dataA =data
+            });
+            console.log("dataaaAfficheMedia",dataB)
+            res.format ({
+                'application/json': function() {
+                    res.send({ data: data });
+                },'text/html': function() {
+                    let dataF = []
 
-                        for(let x in data) dataF.push(data[x].nomRessource)
-                        res.render('Parse',{data:data});
-                    }
-                });
+                    //for(let x in data) dataF.push(data[x].nomRessource)
+                    if(req.path==="/Gestion") res.render('Gestion',{dataA:dataA,dataB:dataB});
+                    else res.render('Parse',{data:dataB});
+                }
+        })
 
-            })
 
-
-    }, recherchePageMedia: async function(req,res){
+}, recherchePageMedia: async function(req,res){
         await processMedia.rechercheMedia({userID : req.user._id})
             .then((data)=>{
                 res.format ({
@@ -294,6 +300,21 @@ module.exports = {
                 })
         }).catch((typeErr)=>{
             res.status(400).json(typeErr)
+        })
+        
+    },
+
+    partageMedia : async function(req,res){
+        let name = req.body.selectionAffichage
+        let mail = "kou@gmail.com"
+        console.log("Nom File :", name)
+        const fileID = await processMedia.partageMedia(name, mail)
+        .then((result)=>{
+            res.status(200).json({sucess :'Fichier partagé'})
+        }).catch((typeErr)=>{
+            console.log("erroor",typeErr)
+            res.status(400).json(typeErr)
+            
         })
         
     },

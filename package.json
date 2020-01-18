@@ -27,6 +27,7 @@
     "express-session": "^1.15.2",
     "image-size": "^0.8.3",
     "is-electron": "^2.2.0",
+    "jQuery": "^1.7.4",
     "joi": "^14.3.1",
     "jquery-node": "^0.3.0",
     "js-pptx": "github:won21kr/js-pptx",
@@ -45,6 +46,8 @@
     "pdfreader": "^1.0.6",
     "pptx-compose": "^0.4.0",
     "randomstring": "^1.1.5",
-    "textract": "^2.5.0"
+    "speech-recognition": "0.0.1",
+    "textract": "^2.5.0",
+    "voice-speech-recognition": "^1.1.2"
   }
 }

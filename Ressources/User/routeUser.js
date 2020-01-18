@@ -112,7 +112,7 @@ router.route('/logout')
         res.redirect('/')
     });
 
-    router.route('/desactiver/:userID')
+    router.route('profil/:userID')
     .put(isAuthenticated,async(req, res) => {
 
        actionUser.desactiverCompte(req,res)
