@@ -1,8 +1,12 @@
+//********************************************** */
+// Ce fichier traite les requetes reçus par routeMedia
+//Pour les envoyer vers le fichier processMedia
+//*********************************************** */
+
 let fs      = require('fs'),
     path    = require('path');
 let dataA;
 let dataB;
-
 const processMedia = require('./processMedia')
 const office2html = require('office2html')
 const  generateHtml = office2html.generateHtml;
@@ -11,14 +15,15 @@ const passport = require('passport')
 
 const pdf = require('pdf-parse');
 
-
+const config = require("../../config/config.js")
 
 function printRows(rows) {
     Object.keys(rows) // => array of y-positions (type: float)
         .sort((y1, y2) => parseFloat(y1) - parseFloat(y2)) // sort float positions
         .forEach(y => console.log((rows[y] || []).join(" ")));
 }
-
+//********************************************** */
+//Cette fonction permet de parser le fichier PDF Uploder
 async function  parserMedia (filePath){
  let rows = {}; // indexed by y-position
 
@@ -37,29 +42,6 @@ async function  parserMedia (filePath){
             texte = texte + item.text
         }
     });
-/*
-    let texte=""
-    let dataBuffer = fs.readFileSync(filePath);
-
-    pdf(dataBuffer).then(function(data) {
-
-        // number of pages
-        console.log(data.numpages);
-        // number of rendered pages
-        console.log(data.numrender);
-        // PDF info
-        console.log(data.info);
-        // PDF metadata
-        console.log(data.metadata);
-        // PDF.js version
-        // check https://mozilla.github.io/pdf.js/getting_started/
-        console.log(data.version);
-        // PDF text
-        console.log(data.text);
-        let texte=data.text
-        return texte
-    });
-*/
 }
 let myCallback = function(texte,req,res) {
     let page={numPage : String,
@@ -114,7 +96,8 @@ let myCallback = function(texte,req,res) {
         }
 };
 module.exports = {
-
+//************************************************************* */
+//Cette fonction permet d'afficher la lites des fichiers uploader
     afficheMedia: async function(req,res){
         await processMedia.afficheMediaP({partage : req.user.email}).then((data)=>{
                  dataB = data
@@ -128,15 +111,18 @@ module.exports = {
                     res.send({ data: data });
                 },'text/html': function() {
                     let dataF = []
-
+                    console.log("confiiiiig",config.domaine)
                     //for(let x in data) dataF.push(data[x].nomRessource)
-                    if(req.path==="/Gestion") res.render('Gestion',{dataA:dataA,dataB:dataB});
+                    if(req.path==="/Gestion") res.render('Gestion',{dataA:dataA,dataB:dataB,domain:config.domaine});
                     else res.render('Parse',{data:dataA});
                 }
         })
 
 
-}, recherchePageMedia: async function(req,res){
+}, 
+//******************************************************* */
+//Cete fonction permet de chercher une page dans un fichier
+recherchePageMedia: async function(req,res){
         await processMedia.rechercheMedia({userID : req.user._id})
             .then((data)=>{
                 res.format ({
@@ -156,7 +142,9 @@ module.exports = {
 
 
     },
-    parseMedia: async function(req,res){
+//********************************************** */
+//Cette fonction permet de parser le fichier PDF Uploder
+parseMedia: async function(req,res){
         //let texte = await parserMedia("Ressources\\Media\\files\\"+req.body.select2)
         let rows = {}; // indexed by y-position
         let texte=""
@@ -178,37 +166,6 @@ module.exports = {
                 texte=texte+" " + item.text
             }
         });
-
-
-    /*    let dataBuffer = fs.readFileSync("Ressources\\Media\\files\\"+req.body.select2);
-
-        pdf(dataBuffer).then(function(data) {
-
-            // number of pages
-            console.log(data.numpages);
-            // number of rendered pages
-            console.log(data.numrender);
-            // PDF info
-            console.log(data.info);
-            // PDF metadata
-            console.log(data.metadata);
-            // PDF.js version
-            // check https://mozilla.github.io/pdf.js/getting_started/
-            console.log(data.version);
-            // PDF text
-            console.log(data.text);
-             texte=data.text
-            console.log("parsing",texte)
-            res.format ({
-                'application/json': function() {
-                    res.send({ data: texte });
-                },'text/html': function() {
-
-                    res.render('Parse',{fichierParser:texte});
-                }
-            });
-
-        });*/
 
     },
     uploadMedia : async  function (req,res) {
@@ -282,7 +239,8 @@ module.exports = {
             res.status(401).json(error)
         }
     },
-
+//************************************************* */
+//Cette fonction permet de supprimer un fichier
     supprimerMedia : async function(req,res){
         let name = req.body.selectionDelete
         console.log("Nom File :", name)
@@ -315,7 +273,9 @@ module.exports = {
          })
         
     },
-
+//************************************************** */
+//Cette fonction permet de partager un fichier avec un 
+//autre utilisateur incsrit
     partageMedia : async function(req,res){
         let name = req.body.selectionAffichage
         let mail = req.body.email

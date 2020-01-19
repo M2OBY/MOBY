@@ -4,16 +4,18 @@
 
     <ul class="nav nav-justified">
 
-      <li class="active"><a href="/">Accueil</a></li>
+      
         {{#if isAuthenticated}} 
+        <li class="active"><a href="/users/dashboard">Accueil</a></li>
         <li><a href="/users/profil">Profil</a></li>
-        <li><a href="/users/dashboard">Dashboard</a></li>
+        
         <li><a href="/media">upload</a></li>
         <li><a href="/media/parse">parser</a></li>
-          <li><a href="/media/find">Recherche</a></li>
+          {{!-- <li><a href="/media/find">Recherche</a></li> --}}
           <li><a href="/media/Gestion">Gestion de fichier</a></li>
         <li><a href="/users/logout">Logout</a></li>
        {{else}}
+       <li class="active"><a href="/">Accueil</a></li>
         <li><a href="/users/register"> S'inscrire</a></li>
         <li><a href="/users/login">Se connecter</a></li>
        {{/if}}

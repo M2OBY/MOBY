@@ -1,6 +1,9 @@
+//********************************************** */
+// Ce fichier traite les requetes reçus par routeUser
+//Pour les envoyer vers le fichier processUser
+//*********************************************** */
+
 //********Modules************/
-
-
 //pour controler les inputs du password
 const Joi    = require('joi')
 const bcrypt = require('bcryptjs');
@@ -19,6 +22,7 @@ const userSchema = Joi.object().keys({
       password : Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
       confirmationPassword : Joi.any().valid(Joi.ref('password')).required()
 })
+
 
 module.exports = {
 //===========Cette methode permet d'ajouter un utlisateur ds la BDD========
@@ -109,7 +113,10 @@ module.exports = {
         } catch (error) {
             next(error)
         }
-    },async affichageProfil (req,res,next){
+    },
+//****************************************** */
+//Cette fonction permet d'afficher un profil   
+async affichageProfil (req,res,next){
     try{
 
         let user= await processUser.affichageUser(req.body.email)
@@ -134,6 +141,9 @@ module.exports = {
     }
 },
 
+//****************************************** */
+//Cette fonction permet de vérifier l'adresse mail
+//de l'utilisateur
     async verifyUser(req, res,next){
         try {
 
@@ -157,36 +167,44 @@ module.exports = {
         }
     },
 
+//****************************************************** */
+//Cette fonction permet de désactiver un compte utilisateur
     desactiverCompte : async function(req,res){
         let userID = req.user.id
         console.log('id user function update ::', userID)
         processUser.desactiverCompte(userID);
-        res.json({message: 'Compte désactivé'})
-        //res.render('logout');
+        //res.json({message: 'Compte désactivé'})
+        req.logout()
+        req.flash('success', 'Compte desactivé avec succès ! ')
 
+        res.redirect('/')
     },
+//****************************************************** */
+//Cette fonction permet de mettre à jour les informations
+//d'un utilisateur
+    updateCompte : async function(req,res,next){
+        try{
 
-    updateCompte : async function(req,res){
+
+      
         let userID = req.user.id
         console.log("Profile::", req.body)
         console.log('id user function update ::', userID)
-        const compte = await processUser.updateCompte(userID, req.body);
-        //res.json({message: 'Compte mis à jour!'})
-        
-        res.render('profil',{data:req.body});
-        //res.send(compte);
+        console.log('req.body', req.body)
 
-    },
-
-    /* loginUser : async function(req,res){
-
-        processUser.loginUser(req).then(log =>{
-            console.log(res);
-            res.send(log)
+        const compte = await processUser.updateCompte(userID, req.body).then((data)=>{
+            req.flash('success', 'Merci ! Mise à jour profil avec succès')
         });
-    }, */
+       
 
-   
+        res.redirect('/users/profil');
+       
+        //res.send(compte);
+    }catch(error){
+       
+        next(error)
+    }
+    },  
 
 
 }

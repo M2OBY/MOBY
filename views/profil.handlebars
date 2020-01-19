@@ -1,38 +1,70 @@
-<form>
-<form class="formprofil" action="/users/profil/" method="POST" >
+<style>
+  .monForm{
+background-color: cadetblue;
+    padding-top: 7px;
+    margin: 0px;
+    padding-left: 226px;
+    padding-right: 301px;
+   height: 521px;
+  }
+    .monForm1{
+background-color: cadetblue;
+    padding-top: 7px;
+    margin: 0px;
+    padding-left: 226px;
+    padding-right: 301px;
+    height: 280px;
+  }
+ 
+  .modif{
+        width: 127px;
+  }
+ 
+</style>
+<form class="monForm" action="/users/profil/" method="POST" >
  
     
       <div> <label for="inputState"  >Genre</label>
       <select id="inputState" class="form-control" name="genre" value={{data.genre}} >
         
-        <option >Indéterminé </option>
-         {{!-- {{#if eq data.genre "Homme"}}
-         <option> Femme </option>
-        <option selected> Homme </option>
+
+
+         {{#if data.genre}}
+         <option selected> {{data.genre}} </option>
+         <option  > Femme </option>
+        <option> Homme </option>
+          {{else}}
+        <option selected > indeterminer </option>
+        <option  > Femme </option>
+        <option> Homme </option>
          {{/if}}
-         {{#if eq data.genre  "Femme"}}
-        <option selected> Femme </option>
-        <option> Homme </option>
-        {{/if}} --}}
-         <option selected> Femme </option>
-        <option> Homme </option>
+
+         
+         
+      
+
+      
       </select>
       </div>
       
 <div>
       <label for="inputEmail4">Nom</label>
-      <input type="text" class="form-control" id="inputPassword4" name= "name" value={{data.name}} placeholder="Nom">
-    </div>
+     
+       
+        <input type="text" class="form-control" id="inputPassword4" name= "name" {{#if data.name}} value={{data.name}} {{/if}} placeholder="Nom">
+ 
+         
+  </div>
 
     <div>
   {{!-- <div class="form-group col-md-6"> --}}
       <label for="inputPassword4">Prénom</label>
-      <input type="text" class="form-control" id="inputEmail4" name= "prenom" value={{data.prenom}} placeholder="Prénom">
+      <input type="text" class="form-control" id="inputEmail4" name= "prenom" {{#if data.prenom}} value={{data.prenom}} {{/if}} placeholder="Prénom">
     </div>
 
       <div>  {{!-- <div class="form-group col-md-6"> --}}
       <label for="inputPassword4">Date de Naissance</label>
-      <input type="date" class="form-control" name="dateNaissance" value={{data.naissance}} id="inputEmail4">
+      <input type="date" class="form-control" name="dateNaissance" {{#if data.dateNaissance}} value={{data.dateNaissance}} {{/if}} id="inputEmail4">
     </div>
 
       <div>
@@ -43,17 +75,17 @@
   
   <div class="form-group">
     <label for="inputAddress">Ville</label>
-    <input type="text" class="form-control" name= "ville" id="inputAddress" value={{data.ville}} placeholder="Ville">
+    <input type="text" class="form-control" name= "ville" id="inputAddress" {{#if data.ville}} value={{data.ville}} {{/if}} placeholder="Ville">
   </div>
 
   <div class="form-group">
     <label for="inputAddress2">Mobile</label>
-    <input type="text" class="form-control" name= "mobile" id="inputAddress2" value={{data.mobile}} placeholder="Mobile">
+    <input type="text" class="form-control" name= "mobile" id="inputAddress2" {{#if data.mobil}} value={{data.mobile}} {{/if}} placeholder="Mobile">
   </div>
-  <button type="submit" class="btn btn-primary">Modifier Profil</button>
+  <button type="submit" class="btn btn-primary modif">Modifier Profil</button>
 
    </form>     
-   <form action="/users/desactiver/" Method="POST">
+   <form class="monForm1" action="/users/desactiver/" Method="POST">
         <button type="submit" class="btn btn-primary">Désactiver Profil</button>
       </form> 
-      </form>       
+            

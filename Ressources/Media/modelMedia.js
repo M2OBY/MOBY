@@ -11,9 +11,7 @@ const mediaSchema = new Schema(
         },
 
         partage: {
-            mailP : {
-
-            }
+            mailP : String
         },
         nomRessource :String,
         userID : String,

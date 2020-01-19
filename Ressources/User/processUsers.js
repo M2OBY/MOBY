@@ -1,3 +1,10 @@
+//********************************************** */
+// Ce fichier permet d'envoyer les requetes à
+//la base de données Mongo DB
+//*********************************************** */
+
+
+
 //**********Module**********/
 //pour controler les inputs du password
 
@@ -19,6 +26,8 @@ module.exports = {
             })
 
     },
+//************************************************* */
+//Cette fonction de vérifier le mail de l'utilisateur
     verifUser: (users) => {
         return new Promise( (resolve, reject) =>{
 
@@ -33,6 +42,8 @@ module.exports = {
                     }else if(!result) reject (err)
                 })
         })},
+//************************************************* */
+//Cette fonction d'afficher les infos de l'utilisateur
     affichageUser: (email) => {
         return new Promise( (resolve, reject) =>{
 
@@ -46,7 +57,8 @@ module.exports = {
                 }else if(!result) reject (err)
             })
         })},
-
+//************************************************* */
+//Requetes NO Sql pour désactiver le compte
         desactiverCompte : (id) => {
         return new Promise( (resolve, reject) =>{
             User.findOneAndUpdate({_id: id}, {active : false}, 
@@ -59,7 +71,8 @@ module.exports = {
             }) 
         })
     },
-
+//************************************************* */
+//Requetes NO Sql pour mettre à jour le compte
         updateCompte : (id, body)=> {
 
     return new Promise( (resolve, reject) =>{

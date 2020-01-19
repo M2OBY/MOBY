@@ -1,10 +1,13 @@
+//********************************************** */
+// Ce fichier permet d'envoyer les requetes à
+//la base de données Mongo DB
+//*********************************************** */
 //**********Module**********/
-//
-
 const Media = require('./modelMedia')
 let partage = [] ;
+let mails =  [] ;
 module.exports = {
-    //******************************Creer un compte************************************************************ */
+    //******************************Ajouter un fichier************************************************************ */
     creeMedia: (mediaa) => {
         return new Promise(  (resolve, reject) =>{
 
@@ -98,7 +101,7 @@ module.exports = {
                 }
             })
         })} ,
-
+           
         partageMedia : (name, mail) => {
             partage = []  
             partage.push(mail)
@@ -114,6 +117,7 @@ module.exports = {
                 }) 
             })
         }
+
 
     }
 

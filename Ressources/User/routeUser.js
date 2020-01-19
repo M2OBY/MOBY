@@ -1,3 +1,7 @@
+//********************************************** */
+// Ce fichier contient les différentes routes
+//pour les services concernant l'utilisateur
+//*********************************************** */
 const express = require('express')
 const router = express.Router()
 const actionUser = require ('./actionUser')
@@ -26,7 +30,7 @@ const isAuthenticated = (req,res,next) => {
 const isNotAuthenticated = (req,res,next) => {
 
     if(req.isAuthenticated()){
-        req.flash('error','désolé vous êtes déjà connecté')
+        req.flash('error','Désolé vous êtes déjà connecté')
         res.redirect('/')
 
     }else{
@@ -74,7 +78,8 @@ router.route('/login')
 
             });
         }
-        console.log("reqLogin",req.user,"auten:",req.isAuthenticated())
+        
+        
 
 
 
@@ -84,13 +89,14 @@ router.route('/login')
 router.route('/profil')
     
     .get(isAuthenticated,(req, res) => {
-        //console.log("YOUPIIIIIIIIIIIIIIIIIIIII")
+        console.log("YOUPIIIIIIIIIIIIIIIIIIIII",req.user)
+
       res.render('profil',{data:req.user});
     })
 
 router.route('/dashboard')
     .get(isAuthenticated,(req, res) => {
-        console.log('req..user',req)
+        
        res.render('dashboard',{username:req.user.username});
     })
 

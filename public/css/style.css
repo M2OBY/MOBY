@@ -33,7 +33,17 @@ aside{
   color: rgb(79, 122, 214);
 
 }
-
+.container {
+  width: 1170px;
+  height: 800px;
+}
+.fit-picture{
+  width: 1137px;
+  background-image: url(./partage-de-fichiers-1.png);
+  height: 472px;
+  position: relative;
+  left: -58px;
+}
 .formprofil{
   padding: 100px;
     height: 787px;
