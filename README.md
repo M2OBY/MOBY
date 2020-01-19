@@ -1,12 +1,12 @@
-## `Présentation du Projet Pilotage vocale d'une application`
+## `Présentation du Projet de Pilotage et gestion de fichiers`
  Cette application a été conçu dans le cadre de la réalisation d’un projet en Développement de Logiciel Libre sous la licence CC BY-NC-SA.
-L’objectif étant, de réaliser une application qui permettra aux utilisateurs de contrôler des documents (Exemple fichier PDF) de leur présentation uniquement grâce à leur voix.<br />
+L’objectif étant, de réaliser une application qui permettra aux utilisateurs de contrôler des documents (Exemple fichier PDF) de leur présentation notamment en ajoutant, partageant, supprimant leurs fichiers et accessoirement les contrôler grâce à leur voix. <br />
 
 Notre projet est scindé en 2 parties:
 <h4> Partie Frontend </h4>
 <h4> Partie Backend </h4>
 
-La partie <b> Backend </b> est structuré en composants ,et chacun est constiuté de la manière suivante: <br>
+La partie <b> Backend </b> est structuré en composants, et chacun est constitué de la manière suivante: <br>
 
 <h4> Route: <br> </h4>
 La route définit le chemin par lequel on appelle l'action, afin que la requete soit traitée.
