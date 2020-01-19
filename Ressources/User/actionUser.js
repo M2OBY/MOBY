@@ -161,8 +161,8 @@ module.exports = {
         let userID = req.user.id
         console.log('id user function update ::', userID)
         processUser.desactiverCompte(userID);
-        //res.json({message: 'Compte désactivé'})
-        res.render('logout');
+        res.json({message: 'Compte désactivé'})
+        //res.render('logout');
 
     },
 

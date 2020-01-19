@@ -1,3 +1,4 @@
+<form>
 <form class="formprofil" action="/users/profil/" method="POST" >
  
     
@@ -50,5 +51,9 @@
     <input type="text" class="form-control" name= "mobile" id="inputAddress2" value={{data.mobile}} placeholder="Mobile">
   </div>
   <button type="submit" class="btn btn-primary">Modifier Profil</button>
-  <a href= "/users/desactiver/"><div>Désactiver Profil</div></a></a>>
-   </form>              
+
+   </form>     
+   <form action="/users/desactiver/" Method="POST">
+        <button type="submit" class="btn btn-primary">Désactiver Profil</button>
+      </form> 
+      </form>       
