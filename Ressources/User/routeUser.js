@@ -80,13 +80,13 @@ router.route('/login')
 
 
     })
-/*
+
 router.route('/profil')
-    .post(passport.authenticate('local'),(req, res,next) => {
-        console.log("profil requette connecté : ",req.isAuthenticated())
-        actionUser.affichageProfil(req,res,next);
+    
+    .get(isAuthenticated,(req, res) => {
+        //console.log("YOUPIIIIIIIIIIIIIIIIIIIII")
+      res.render('profil',{data:req.user});
     })
-*/
 
 router.route('/dashboard')
     .get(isAuthenticated,(req, res) => {
@@ -112,16 +112,18 @@ router.route('/logout')
         res.redirect('/')
     });
 
-    router.route('profil/:userID')
-    .put(isAuthenticated,async(req, res) => {
+
+    router.route('/desactiver/')
+    .post(isAuthenticated,async(req, res) => {
+
 
        actionUser.desactiverCompte(req,res)
     });
 
     router.route('/profil')
-    .post(passport.authenticate('local'),async(req, res) => {
+    .post(isAuthenticated,async(req, res,next) => {
 
-       actionUser.updateCompte(req,res)
+       actionUser.updateCompte(req,res,next)
     });
 
 
