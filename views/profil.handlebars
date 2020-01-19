@@ -1,0 +1,54 @@
+<form class="formprofil" action="/users/profil/" method="POST" >
+ 
+    
+      <div> <label for="inputState"  >Genre</label>
+      <select id="inputState" class="form-control" name="genre" value={{data.genre}} >
+        
+        <option >Indéterminé </option>
+         {{!-- {{#if eq data.genre "Homme"}}
+         <option> Femme </option>
+        <option selected> Homme </option>
+         {{/if}}
+         {{#if eq data.genre  "Femme"}}
+        <option selected> Femme </option>
+        <option> Homme </option>
+        {{/if}} --}}
+         <option selected> Femme </option>
+        <option> Homme </option>
+      </select>
+      </div>
+      
+<div>
+      <label for="inputEmail4">Nom</label>
+      <input type="text" class="form-control" id="inputPassword4" name= "name" value={{data.name}} placeholder="Nom">
+    </div>
+
+    <div>
+  {{!-- <div class="form-group col-md-6"> --}}
+      <label for="inputPassword4">Prénom</label>
+      <input type="text" class="form-control" id="inputEmail4" name= "prenom" value={{data.prenom}} placeholder="Prénom">
+    </div>
+
+      <div>  {{!-- <div class="form-group col-md-6"> --}}
+      <label for="inputPassword4">Date de Naissance</label>
+      <input type="date" class="form-control" name="dateNaissance" value={{data.naissance}} id="inputEmail4">
+    </div>
+
+      <div>
+    {{!-- <div class="form-group col-md-6"> --}}
+      <label for="inputPassword4">Email</label>
+      <input type="email" class="form-control" name="email" id="inputPassword4" value={{data.email}}>
+    </div>
+  
+  <div class="form-group">
+    <label for="inputAddress">Ville</label>
+    <input type="text" class="form-control" name= "ville" id="inputAddress" value={{data.ville}} placeholder="Ville">
+  </div>
+
+  <div class="form-group">
+    <label for="inputAddress2">Mobile</label>
+    <input type="text" class="form-control" name= "mobile" id="inputAddress2" value={{data.mobile}} placeholder="Mobile">
+  </div>
+  <button type="submit" class="btn btn-primary">Modifier Profil</button>
+  <a href= "/users/desactiver/"><div>Désactiver Profil</div></a></a>>
+   </form>              

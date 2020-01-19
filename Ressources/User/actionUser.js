@@ -71,7 +71,7 @@ module.exports = {
             const secretToken = randomstring.generate()
             result.value.secretToken = secretToken
 
-            // flag le compte comme inactive
+            // flag le compte est inactive
             result.value.active = false
 
             //Enregistrer utilisateur dans la BD
@@ -158,19 +158,23 @@ module.exports = {
     },
 
     desactiverCompte : async function(req,res){
-        let userID = req.params.userID
-        
+        let userID = req.user.id
+        console.log('id user function update ::', userID)
         processUser.desactiverCompte(userID);
-        res.json({message: 'Compte désactivé'})
+        //res.json({message: 'Compte désactivé'})
+        res.render('logout');
 
     },
 
     updateCompte : async function(req,res){
         let userID = req.user.id
+        console.log("Profile::", req.body)
         console.log('id user function update ::', userID)
         const compte = await processUser.updateCompte(userID, req.body);
         //res.json({message: 'Compte mis à jour!'})
-        res.send(compte);
+        
+        res.render('profil',{data:req.body});
+        //res.send(compte);
 
     },
 
