@@ -18,6 +18,10 @@ header {
   font-size: 35px;
   color: white;
 }
+.selectionAffichage{
+        font-size: 15px;
+    font-style: oblique;
+}
 .container {
     width: 1170px;
     height: 900px;
@@ -30,7 +34,15 @@ form {
   background: #ccc;
   padding: 20px;
 }
-
+#pdf_file2 {
+  margin-left: 239px;
+    margin-top: -643px;
+}
+  #pdf_file1 {
+  margin-left: 239px;
+    margin-top: -643px;
+    
+}
 /* Style the list inside the menu */
 .nav-tabs>li>a {
     margin-right: 2px;
@@ -47,7 +59,9 @@ article {
       height: 657px; /* only for demonstration, should be removed */
 }
 
-
+#Partager {
+        margin-top: 0px;
+}
 
 
 </style>
@@ -56,35 +70,71 @@ article {
  
 <ul class="nav nav-tabs" id="myTab" role="tablist">
   <li class="nav-item">
-    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#afficher" role="tab" aria-controls="home" aria-selected="true">Afficher</a>
+    <a class="nav-link active" id="afficher-tab" data-toggle="tab" href="#afficher" role="tab" aria-controls="afficher" aria-selected="true">Afficher</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Supprimer</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Partager</a>
+    <a class="nav-link" id="Partager-tab" data-toggle="tab" href="#Partager" role="tab" aria-controls="Partager" aria-selected="false">Partager</a>
   </li>
 </ul>
+
+
 </header>
 
 <section>
     <article>
 <div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade show active" id="afficher" role="tabpanel" aria-labelledby="home-tab">
-       <embed  id="pdf_file" src="http://192.168.43.95:5000/media/files/coursCPAR21579116552970.pdf" width=800 height=657 type='application/pdf'/>
-
+  <div class="tab-pane fade active" id="afficher" name="afficher" role="tabpanel" aria-labelledby="afficher-tab" >
+     <embed  id="pdf_file" src="http://192.168.43.95:5000/media/files/coursCPAR21579116552970.pdf" width=800 height=657 type='application/pdf'/>
+  
   </div>
-  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
-  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+
+
+
+  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+
+<form class="form-signin" action="/Media/supprimer" method="POST">
+  <h2 class="form-signin-heading">Supprimer un fichier</h2>
+
+<p>Selectionner un fichier à supprimer à droite</p>
+<input type="text" id="inputFileS" name="selectionDelete" class="form-control" placeholder="Selectionne un fichier a gauche" required autofocus>
+  <br/>
+  
+  <button class="btn btn-lg btn-default btn-block" type="submit">Supprimer</button>
+</form>
+ <embed  id="pdf_file1" src="http://192.168.43.95:5000/media/files/coursCPAR21579116552970.pdf" width=559 height=657 type='application/pdf'/>
+  
+      
+  </div>
+  
+  <div class="tab-pane fade " id="Partager" role="tabpanel" aria-labelledby="Partager-tab">
+   
+ <form class="form-signin" action="/Media/partage" method="POST">
+  <h2 class="form-signin-heading">Partager un fichier</h2>
+
+  <label for="inputEmail" class="sr-only">Email address</label>
+  <input type="email" id="inputEmail" name="email" class="form-control" placeholder="name@example.com" required autofocus>
+<p>Selectionner un fichier a partager a droite</p>
+<input type="text" id="inputFile" name="selectionAffichage" class="form-control" placeholder="Selectionne un fichier a gauche" required autofocus>
+  <br/>
+  
+  <button class="btn btn-lg btn-default btn-block" type="submit">Partager</button>
+</form>
+
+       <embed  id="pdf_file2" src="http://192.168.43.95:5000/media/files/coursCPAR21579116552970.pdf" width=559 height=657 type='application/pdf'/>
+  
+  </div>
 </div>
   </article>
     <div>
   <form>
  
   <div class="form-group">
-    <label for="selectionAffichage">Example multiple select</label>
+    <label for="selectionAffichage" class="selectionAffichage">Mes fichiers</label>
     {{#if dataA}}
-    <select multiple class="form-control" id="selectionAffichage">
+    <select multiple class="form-control" id="selectionAffichage" >
       {{#each dataA}}
             <option >{{nomRessource}}</option>
         {{/each}}
@@ -93,9 +143,9 @@ article {
   </div>
 
     <div class="form-group">
-    <label for="selectionPartage">Example multiple select</label>
+    <label for="selectionPartage" class="selectionAffichage">Les fichiers partagés avec moi </label>
     {{#if dataB}}
-    <select multiple class="form-control" id="selectionPartage">
+    <select multiple class="form-control" id="selectionPartage" >
       {{#each dataB}}
             <option >{{nomRessource}}</option>
         {{/each}}
@@ -108,6 +158,8 @@ article {
 </form>
 </div>
 <script>
+
+
     'use strict';
  
     document.addEventListener( "DOMContentLoaded", ev => {
@@ -115,13 +167,26 @@ article {
     }, false );
     
     window.addEventListener( "load", ev => {
-      
+    
       document.querySelector( "#selectionAffichage" ).addEventListener( "change", ev => {
         let n = ev.target.value;
-        console.log("doc",document.querySelector('embed#pdf_file').src = 'http://192.168.43.95:5000/media/files/'+n)
+        console.log("testtttttt",ev.target)
+        
+        console.log("doci",document.querySelector('#pdf_file').src = 'http://192.168.43.95:5000/media/files/'+n)
+console.log("doci",document.querySelector('#pdf_file1').src = 'http://192.168.43.95:5000/media/files/'+n)
+console.log("doci",document.querySelector('#pdf_file2').src = 'http://192.168.43.95:5000/media/files/'+n)
+
+        document.querySelector('#inputFile').value = n;
+        document.querySelector('#inputFileS').value = n;
+        console.log("doc",document.querySelector('#inputFile').value)
+      });
+   document.querySelector( "#selectionPartage" ).addEventListener( "change", ev => {
+        let n = ev.target.value;
+        console.log("doci",document.querySelector('#pdf_file').src = 'http://192.168.43.95:5000/media/files/'+n)
+console.log("doci",document.querySelector('#pdf_file1').src = 'http://192.168.43.95:5000/media/files/'+n)
+console.log("doci",document.querySelector('#pdf_file2').src = 'http://192.168.43.95:5000/media/files/'+n)
 
       });
- 
       kIDUnique();
     }, false );
   </script>

@@ -131,7 +131,7 @@ module.exports = {
 
                     //for(let x in data) dataF.push(data[x].nomRessource)
                     if(req.path==="/Gestion") res.render('Gestion',{dataA:dataA,dataB:dataB});
-                    else res.render('Parse',{data:dataB});
+                    else res.render('Parse',{data:dataA});
                 }
         })
 
@@ -257,7 +257,7 @@ module.exports = {
                     if (error) {
                         console.log('erruuurfile',error)
                         res.status(402).json(error)
-
+3 
                     } else {
                         // --- Update the object to get the link
                         req.flash('success','Fichier ajouter avec succès')
@@ -284,33 +284,56 @@ module.exports = {
     },
 
     supprimerMedia : async function(req,res){
-        let name = req.body.ficheAParser
+        let name = req.body.selectionDelete
         console.log("Nom File :", name)
         const fileID = await processMedia.afficherMediaName(name)
         .then((result)=>{
             //res.status(200).json({sucess :'Fichier Supprimée'})
             fs.unlinkSync(path.join(__dirname+'/files', name ));
             console.log('file deleted');
-            // Supprimer le fichier dans la base de données
-                processMedia.supprimerMedia(fileID)
-                .then((result)=>{
-                    res.status(200).json({sucess :'Fichier Supprimée'})
-                }).catch((typeErr)=>{
-                    res.status(400).json(typeErr)
-                })
+            return result
+           
         }).catch((typeErr)=>{
-            res.status(400).json(typeErr)
+            res.status(500).json(typeErr)
         })
+        console.log("fileeeeeeeeeeeeeeeeID",fileID)
+         // Supprimer le fichier dans la base de données
+        await processMedia.supprimerMedia(fileID)
+         .then((result)=>{
+             //res.status(200).json({sucess :'Fichier Supprimée'})
+             req.flash('success','Fichier Supprimé')
+               res.format ({
+         'application/json': function() {
+             res.send({sucess :'Fichier partagé'});
+         },'text/html': function() {
+             res.redirect('/Media/Gestion');
+         }
+     });
+
+         }).catch((typeErr)=>{
+             res.status(400).json(typeErr)
+         })
         
     },
 
     partageMedia : async function(req,res){
         let name = req.body.selectionAffichage
-        let mail = "kou@gmail.com"
-        console.log("Nom File :", name)
+        let mail = req.body.email
+        console.log("Nom File :", name,mail)
         const fileID = await processMedia.partageMedia(name, mail)
         .then((result)=>{
-            res.status(200).json({sucess :'Fichier partagé'})
+
+            req.flash('success','Fichier partager avec succès')
+            res.format ({
+                'application/json': function() {
+                    res.send({sucess :'Fichier partagé'});
+                },'text/html': function() {
+                    res.redirect('/Media/Gestion');
+                }
+            });
+
+
+
         }).catch((typeErr)=>{
             console.log("erroor",typeErr)
             res.status(400).json(typeErr)

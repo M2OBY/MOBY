@@ -100,7 +100,7 @@ module.exports = {
         })} ,
 
         partageMedia : (name, mail) => {
-               
+            partage = []  
             partage.push(mail)
               return new Promise( (resolve, reject) =>{
                 console.log("emailpartrage",partage)

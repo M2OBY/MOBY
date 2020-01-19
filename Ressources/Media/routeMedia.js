@@ -89,8 +89,8 @@ router.route('/find/')
 
 
     router.route('/supprimer/')
-    .delete(isAuthenticated,async(req, res) => {
-
+    .post(isAuthenticated,async(req, res) => {
+         console.log("test::!!!!!!!!!!!!")
         actionMedia.supprimerMedia(req,res)
     })
 
