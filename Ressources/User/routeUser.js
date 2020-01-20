@@ -51,7 +51,7 @@ router.route('/login')
       //console.log("YOUPIIIIIIIIIIIIIIIIIIIII")
     res.render('login');
   })
-    .post(passport.authenticate('local'),(req,res)=>{
+    .post(passport.authenticate('local',{failureRedirect : 'login',failureFlash : true}),(req,res)=>{
         if(req.user){
 
             const payload = {
