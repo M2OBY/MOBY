@@ -5,6 +5,7 @@
 const express = require('express')
 const router = express.Router()
 const actionMedia = require ('./actionMedia')
+const actionPartage = require ('./PartageFile/actionPartage')
 const passport = require('passport')
 const jwt = require('jsonwebtoken');
 const JwtStrategy = require('passport-jwt').Strategy;
@@ -59,7 +60,8 @@ router.route('/')
 
     router.route('/partage')
     .post( isAuthenticated, (req, res)  => {
-        actionMedia.partageMedia(req,res);
+        //actionMedia.partageMedia(req,res);
+        actionPartage.partageFile(req,res);
     })
 
 router.route('/parse/')

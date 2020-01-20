@@ -12,7 +12,7 @@ body {
 
 /* Style the header */
 header {
-  background-color: #666;
+  background-color:#1f5898a3;
   padding: 30px;
   text-align: center;
   font-size: 35px;
@@ -27,20 +27,20 @@ header {
     height: 900px;
 }
 /* Create two columns/boxes that floats next to each other */
-form {
+form {    height: 838px;
   float: left;
   width: 30%;
-  height: 657px; /* only for demonstration, should be removed */
+height: 814px; /* only for demonstration, should be removed */
   background: #ccc;
   padding: 20px;
 }
 #pdf_file2 {
-  margin-left: 239px;
-    margin-top: -643px;
+margin: -1px;
+height: 705px;
 }
   #pdf_file1 {
-  margin-left: 239px;
-    margin-top: -643px;
+margin: -1px;
+height: 705px;
     
 }
 /* Style the list inside the menu */
@@ -51,12 +51,12 @@ form {
     border-radius: 4px 4px 0 0;
     font-size: 24px;
 }
-article {
+article {height: 814px;
   float: left;
   padding: 0px;
   width: 70%;
   background-color: #f1f1f1;
-      height: 657px; /* only for demonstration, should be removed */
+     height: 814px; /* only for demonstration, should be removed */
 }
 
 #Partager {
@@ -81,8 +81,8 @@ article {
         console.log("testtttttt",ev.target)
         
         console.log("doci",document.querySelector('#pdf_file').src = 'http://{{domain}}/media/files/'+n)
-console.log("doci",document.querySelector('#pdf_file1').src = 'http://{{domain}}/media/files/'+n)
-console.log("doci",document.querySelector('#pdf_file2').src = 'http://{{domain}}/media/files/'+n)
+        console.log("doci",document.querySelector('#pdf_file1').src = 'http://{{domain}}/media/files/'+n)
+        console.log("doci",document.querySelector('#pdf_file2').src = 'http://{{domain}}/media/files/'+n)
 
         document.querySelector('#inputFile').value = n;
         document.querySelector('#inputFileS').value = n;
@@ -90,12 +90,12 @@ console.log("doci",document.querySelector('#pdf_file2').src = 'http://{{domain}}
       });
    document.querySelector( "#selectionPartage" ).addEventListener( "change", ev => {
         let n = ev.target.value;
-        console.log("doci",document.querySelector('#pdf_file').src = 'http://192.168.43.95:5000/media/files/'+n)
-console.log("doci",document.querySelector('#pdf_file1').src = 'http://192.168.43.95:5000/media/files/'+n)
-console.log("doci",document.querySelector('#pdf_file2').src = 'http://192.168.43.95:5000/media/files/'+n)
+        console.log("doci",document.querySelector('#pdf_file').src = 'http://{{domain}}/media/files/'+n)
+        console.log("doci",document.querySelector('#pdf_file1').src = 'http://{{domain}}/media/files/'+n)
+        console.log("doci",document.querySelector('#pdf_file2').src = 'http://{{domain}}/media/files/'+n)
 
       });
-      kIDUnique();
+      //kIDUnique();
     }, false );
   </script>
 <header>
@@ -115,11 +115,11 @@ console.log("doci",document.querySelector('#pdf_file2').src = 'http://192.168.43
 
 </header>
 
-<section>
+<section> {{array.[0].item}}
     <article>
 <div class="tab-content" id="myTabContent">
   <div class="tab-pane fade active" id="afficher" name="afficher" role="tabpanel" aria-labelledby="afficher-tab" >
-     <embed  id="pdf_file" src="http://{{domain}}/media/files/coursCPAR21579116552970.pdf" width=800 height=657 type='application/pdf'/>
+     <embed  id="pdf_file" src="http://{{domain}}/media/files/{{dataA.[0].nomRessource}}" width=800 height=657 type='application/pdf'/>
   
   </div>
 
@@ -136,7 +136,7 @@ console.log("doci",document.querySelector('#pdf_file2').src = 'http://192.168.43
   
   <button class="btn btn-lg btn-default btn-block" type="submit">Supprimer</button>
 </form>
- <embed  id="pdf_file1" src="http://{{domain}}/media/files/coursCPAR21579116552970.pdf" width=559 height=657 type='application/pdf'/>
+ <embed  id="pdf_file1" src="http://{{domain}}/media/files/{{dataA.[0].nomRessource}}" width=559 height=657 type='application/pdf'/>
   
       
   </div>
@@ -155,7 +155,7 @@ console.log("doci",document.querySelector('#pdf_file2').src = 'http://192.168.43
   <button class="btn btn-lg btn-default btn-block" type="submit">Partager</button>
 </form>
 
-       <embed  id="pdf_file2" src="http://{{domain}}/media/files/coursCPAR21579116552970.pdf" width=559 height=657 type='application/pdf'/>
+       <embed  id="pdf_file2" src="http://{{domain}}/media/files/{{dataA.[0].nomRessource}}" width=559 height=657 type='application/pdf'/>
   
   </div>
 </div>
@@ -179,15 +179,14 @@ console.log("doci",document.querySelector('#pdf_file2').src = 'http://192.168.43
     {{#if dataB}}
     <select multiple class="form-control" id="selectionPartage" >
       {{#each dataB}}
-            <option >{{nomRessource}}</option>
+            <option >{{nomFile}}</option>
         {{/each}}
     </select>
     {{/if}}
   </div>
 
   </div>
-
 </form>
-</div>
-
+ 
 </section>
+<div>

@@ -30,12 +30,22 @@ aside{
   margin-top: 4px;
   margin-bottom: 0px;
   padding-top: 1px;
-  color: rgb(79, 122, 214);
+  
+    color: #ffffff;
+     
+ 
+
 
 }
 .container {
   width: 1170px;
   height: 800px;
+  
+  
+}
+.jumbotron{
+  height: 838px;
+  background-color: #8cc2dea8;
 }
 .fit-picture{
   width: 1137px;
@@ -59,6 +69,11 @@ body {
   padding-top: 0px;
   padding-bottom: 40px;
   width: 100%;
+  height: 838px;
+  background-image: url(./body.jpg) ;
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover;
 }
 
 
@@ -101,7 +116,7 @@ body {
   color: aqua;
   
 }
-
+/*
 footer {
   
   padding: 20px;
@@ -115,7 +130,7 @@ footer {
  
 }
 
-/* footer ul {
+ footer ul {
   
   list-style: none;
   display: grid;

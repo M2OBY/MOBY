@@ -36,19 +36,30 @@ module.exports = {
             console.log('result', result)
 
             if (result.error) {
-                req.flash('error', 'Données non valide, essayer une nouvelle fois s\'il vous plait.')
-                res.redirect('/users/register')
+    
+                res.format ({
+                    'application/json': function() {
+                        res.status(406).send('Données non valide, essayer une nouvelle fois s\'il vous plait.');
+                    },'text/html': function() {
+                        req.flash('error', 'Données non valide, essayer une nouvelle fois s\'il vous plait.')
+                        res.redirect('/users/register')
+                    }})
                 return
             }
             let userExist = false
             //vérification l'existance du mail
-             await processUser.verifUser({username : result.value.username,email:result.value.email})
+             await processUser.verifUser({email:result.value.email})
                 .then((retour)=>{
                     if(retour){
-
-                        console.log('resultat verification mail',retour)
+                        res.format ({
+                            'application/json': function() {
+                                res.status(406).send('error : Email existe déja');
+                            },'text/html': function() {
+                                console.log('resultat verification mail',retour)
                         req.flash('error', 'Email existe déja')
                         res.redirect('/users/register')
+                            }})
+                       
                         userExist = true
                         return
                     }
@@ -96,7 +107,10 @@ module.exports = {
                 })
                 .catch((error)=>{
                     if(error){
-                        console.log('erreeeeeur',error)
+                        res.status(400).json({
+                            "message" : error
+                        })
+                        
                     }
 
 
@@ -111,6 +125,11 @@ module.exports = {
            console.log('mail', mail)
 
         } catch (error) {
+            if(error){
+                res.status(400).json({
+                    "message" : error
+                })
+            }
             next(error)
         }
     },
@@ -137,6 +156,9 @@ async affichageProfil (req,res,next){
         return user
 
     }catch (error) {
+        res.status(400).json({
+            "message" : error
+        })
         next(error)
     }
 },
@@ -152,17 +174,37 @@ async affichageProfil (req,res,next){
             console.log("token",req.body.secretToken)
             //chercher le compte qui matche avec ce secretToken
             const user = await User.findOne({'secretToken': secretToken.trim()})
+
             if (!user) {
-                req.flash('error', 'aucun utilisateur trouvé')
-                res.redirect('verify');
+                res.format ({
+                    'application/json': function() {
+                        res.status(404).send('error aucun utilisateur trouvé');
+                    },'text/html': function() {
+                        console.log('resultat verification mail',retour)
+                        req.flash('error', 'aucun utilisateur trouvé')
+                        res.redirect('verify');
+                    }})
+
+               
                 return
             }
             user.active = true
             //user.secretToken = '';
             await user.save()
-            req.flash('success', 'Merci ! maintenant vous pouvez vous connecter')
-            res.redirect('login')
+
+            res.format ({
+                'application/json': function() {
+                    res.status(200).send('success Merci ! maintenant vous pouvez vous connecter');
+                },'text/html': function() {
+                   
+                    req.flash('success', 'Merci ! maintenant vous pouvez vous connecter')
+                    res.redirect('login')
+                }})
+
         } catch (error) {
+            res.status(400).json({
+                "message" : error
+            })
             next(error)
         }
     },
@@ -175,9 +217,17 @@ async affichageProfil (req,res,next){
         processUser.desactiverCompte(userID);
         //res.json({message: 'Compte désactivé'})
         req.logout()
-        req.flash('success', 'Compte desactivé avec succès ! ')
+        res.format ({
+            'application/json': function() {
+                res.status(200).send('success Compte desactivé avec succès ! ');
+            },'text/html': function() {
+               
+                req.flash('success', 'Compte desactivé avec succès ! ')
 
-        res.redirect('/')
+                res.redirect('/')
+            }})
+
+        
     },
 //****************************************************** */
 //Cette fonction permet de mettre à jour les informations
@@ -193,15 +243,24 @@ async affichageProfil (req,res,next){
         console.log('req.body', req.body)
 
         const compte = await processUser.updateCompte(userID, req.body).then((data)=>{
+            
             req.flash('success', 'Merci ! Mise à jour profil avec succès')
         });
        
-
-        res.redirect('/users/profil');
+        res.format ({
+            'application/json': function() {
+                res.status(200).send('success Merci ! Mise à jour profil avec succès');
+            },'text/html': function() {
+               
+                res.redirect('/users/profil');
+            }})
+        
        
         //res.send(compte);
     }catch(error){
-       
+        res.status(400).json({
+            "message" : error
+        })
         next(error)
     }
     },  

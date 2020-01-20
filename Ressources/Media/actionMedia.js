@@ -8,6 +8,7 @@ let fs      = require('fs'),
 let dataA;
 let dataB;
 const processMedia = require('./processMedia')
+const processPartage = require('./PartageFile/processPartage')
 const office2html = require('office2html')
 const  generateHtml = office2html.generateHtml;
 const pdfreader = require("pdfreader");
@@ -77,7 +78,7 @@ let myCallback = function(texte,req,res) {
         if(requette) {
             res.format({
                 'application/json': function () {
-                    res.send({data: texte});
+                    res.status(200).send({data: texte});
                 }, 'text/html': function () {
 
                     res.render('Parse', {fichierParser: texte});
@@ -86,7 +87,7 @@ let myCallback = function(texte,req,res) {
         }else{
             res.format({
                 'application/json': function () {
-                    res.send({data:"Erreur Serveurs"})
+                    res.status(200).send({data:"Erreur Serveurs"})
                 }, 'text/html': function () {
 
                     res.render('Parse', {fichierParser: "Erreur Serveurs"});
@@ -99,16 +100,26 @@ module.exports = {
 //************************************************************* */
 //Cette fonction permet d'afficher la lites des fichiers uploader
     afficheMedia: async function(req,res){
-        await processMedia.afficheMediaP({partage : req.user.email}).then((data)=>{
-                 dataB = data
-            });
+        try{
+           /* await processMedia.afficheMediaP({partage : req.user.email}).then((data)=>{
+                dataB = data
+           });*/
             await processMedia.afficheMediaP({userID : req.user._id}).then((data)=>{
-                dataA =data
-            });
-            console.log("dataaaAfficheMedia",dataB)
+               dataA =data
+
+           }); 
+
+     
+             await processPartage.afficheFileP({mailTo : req.user.email}).then((data)=>{
+                dataB =data
+                console.log("dataB:",dataB)
+        });
+
+      
+            console.log("dataaaAfficheMedia",dataA)
             res.format ({
                 'application/json': function() {
-                    res.send({ data: data });
+                    res.status(200).send({ data: data });
                 },'text/html': function() {
                     let dataF = []
                     console.log("confiiiiig",config.domaine)
@@ -118,7 +129,10 @@ module.exports = {
                 }
         })
 
-
+    }catch(e){
+        console.log(e)
+    }
+        
 }, 
 //******************************************************* */
 //Cete fonction permet de chercher une page dans un fichier
@@ -127,7 +141,7 @@ recherchePageMedia: async function(req,res){
             .then((data)=>{
                 res.format ({
                     'application/json': function() {
-                        res.send({ data: data });
+                        res.status(200).send({ data: data });
                     },'text/html': function() {
                         let dataF = []
 
@@ -213,8 +227,7 @@ parseMedia: async function(req,res){
                     //si il y a une erreur dans l'upload
                     if (error) {
                         console.log('erruuurfile',error)
-                        res.status(402).json(error)
-3 
+                        res.status(402).json(error) 
                     } else {
                         // --- Update the object to get the link
                         req.flash('success','Fichier ajouter avec succès')
@@ -223,7 +236,7 @@ parseMedia: async function(req,res){
                         //réponse sous deux format : HTML/Json
                         res.format ({
                             'application/json': function() {
-                                res.send({ sucess: 'Fichier ajouter avec succès' });
+                                res.status(201).send({ sucess: 'Fichier ajouter avec succès' });
                             },'text/html': function() {
                                 res.redirect('/media');
                             }
@@ -249,6 +262,7 @@ parseMedia: async function(req,res){
             //res.status(200).json({sucess :'Fichier Supprimée'})
             fs.unlinkSync(path.join(__dirname+'/files', name ));
             console.log('file deleted');
+            req.flash("success",'file deleted')
             return result
            
         }).catch((typeErr)=>{
@@ -262,7 +276,7 @@ parseMedia: async function(req,res){
              req.flash('success','Fichier Supprimé')
                res.format ({
          'application/json': function() {
-             res.send({sucess :'Fichier partagé'});
+             res.status(201).send({sucess :'Fichier partagé'});
          },'text/html': function() {
              res.redirect('/Media/Gestion');
          }
@@ -286,7 +300,7 @@ parseMedia: async function(req,res){
             req.flash('success','Fichier partager avec succès')
             res.format ({
                 'application/json': function() {
-                    res.send({sucess :'Fichier partagé'});
+                    res.status(201).send({sucess :'Fichier partagé'});
                 },'text/html': function() {
                     res.redirect('/Media/Gestion');
                 }
