@@ -29,7 +29,7 @@ app.set('view engine', 'handlebars');
 app.use(bodyParser.json());
 //Définition des CORS
 app.use(ficConfig.activateCors);
-
+ 
 app.use(bodyParser.urlencoded({ extended: false }));
 let busboy     = require('connect-busboy');
 app.use(busboy());
