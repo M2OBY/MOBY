@@ -31,7 +31,7 @@
     "joi": "^14.3.1",
     "jquery-node": "^0.3.0",
     "js-pptx": "github:won21kr/js-pptx",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mailgun-js": "^0.22.0",
     "mongoose": "^5.7.5",
     "morgan": "^1.8.1",
